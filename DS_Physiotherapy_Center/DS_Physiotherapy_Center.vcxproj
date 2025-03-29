@@ -135,6 +135,10 @@
     <ClInclude Include="priQueue.h" />
     <ClInclude Include="QueueADT.h" />
     <ClInclude Include="StackADT.h" />
+    <ClInclude Include="Treatment.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Treatment.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
