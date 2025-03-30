@@ -40,7 +40,7 @@ public:
 
 
     void print() {
-        cout << "P" << id;
+        cout << "P" << id << " ";
 
         if (type == 'N')
             cout << "N" << " ";
