@@ -27,7 +27,13 @@ public:
 	int getAssignmentTime() {
 		return AssignmentTime;
 	}
-
-
+	void setPatient(class Patient* p) {
+		Patient = p;
+	}
+	class Patient* getPatient() {
+		return Patient;
+	}
+	//void setAssignedResource(Resource*AR){
+	//AssignedResource=AR;}
 };
 
