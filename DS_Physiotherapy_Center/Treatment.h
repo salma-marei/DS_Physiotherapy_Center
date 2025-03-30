@@ -1,20 +1,19 @@
 #pragma once
 #include"Patient.h"
-//#include"Resources.h"
+#include"resources.h"
 class Treatment
 {
 	int Duration;
 	int AssignmentTime;
 	Patient* Patient;
-	// pointer to assigned resource lma roaa t3mlo
-	// Resource* AssignedResource;
+	resources* AssignedResource;
 public:
-	Treatment(int d=0, int AT=0):Patient(nullptr) {
+	Treatment(int d = 0, int AT = 0) :Patient(nullptr), AssignedResource(nullptr) {
 		Duration = d;
 		AssignmentTime = AT;
 	}
-	//virtual bool CanAssign(Resource* AssignedResource);
-	//virtual void MoveToWait(Schedular*schedular);
+	virtual bool CanAssign(resources* AssignedResource)=0;
+	//virtual void MoveToWait(Schedular*schedular)=0;
 	void setDuration(int d) {
 		Duration = d;
 	}
@@ -33,7 +32,8 @@ public:
 	class Patient* getPatient() {
 		return Patient;
 	}
-	//void setAssignedResource(Resource*AR){
-	//AssignedResource=AR;}
+	void setAssignedResource(resources*AR){
+	   AssignedResource=AR;
+	}
 };
 
