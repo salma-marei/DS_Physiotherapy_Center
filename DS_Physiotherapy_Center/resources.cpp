@@ -1,13 +1,13 @@
 #include "resources.h"
-resources::resources(int id, ResourceType T) :ID(id), type(T), isAvailable(true) {
-	if (T == GymRoom) {
-		cout << "gym must have a capacity ";
-	}
-}
-resources::resources(int id, ResourceType T, int cap) :ID(id), type(T), isAvailable(true), capacity(cap), CurrentOccupants(0) {
-	if (T != GymRoom) {
-		cout << "ultrasound and electro devices may have only one occupant ";
-	}
+//resources::resources(int id, ResourceType T) :ID(id), type(T), isAvailable(true) {
+//	if (T == GymRoom) {
+//		cout << "gym must have a capacity ";
+//	}
+//}
+resources::resources(int id, ResourceType T, int cap=1) :ID(id), type(T) {
+	isAvailable = true;
+	CurrentOccupants = 0;
+	capacity = cap;
 }
 int resources::getID() {
 	return ID;

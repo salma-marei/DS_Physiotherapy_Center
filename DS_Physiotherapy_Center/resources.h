@@ -10,7 +10,7 @@ private:
 	int capacity; // for gym
 	int CurrentOccupants; // for gym
 public:
-	resources(int id, ResourceType T) {}
+	//resources(int id, ResourceType T) {}
 	resources(int id, ResourceType T, int cap) {}
 	int getID() {}
 	ResourceType getType() {
