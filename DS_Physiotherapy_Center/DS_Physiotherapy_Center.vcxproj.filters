@@ -60,9 +60,6 @@
     <ClInclude Include="EarlyPList.h">
       <Filter>Header Files\Waiting Lists</Filter>
     </ClInclude>
-    <ClInclude Include="EU_WaitList.h">
-      <Filter>Header Files\Waiting Lists</Filter>
-    </ClInclude>
     <ClInclude Include="E_therapy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -84,9 +81,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EarlyPList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EU_WaitList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="E_therapy.cpp">

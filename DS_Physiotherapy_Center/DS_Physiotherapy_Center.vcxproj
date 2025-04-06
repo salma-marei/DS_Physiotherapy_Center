@@ -129,7 +129,6 @@
   <ItemGroup>
     <ClInclude Include="ArrayStack.h" />
     <ClInclude Include="EarlyPList.h" />
-    <ClInclude Include="EU_WaitList.h" />
     <ClInclude Include="E_therapy.h" />
     <ClInclude Include="Patient.h" />
     <ClInclude Include="LinkedList.h" />
@@ -147,7 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EarlyPList.cpp" />
-    <ClCompile Include="EU_WaitList.cpp" />
     <ClCompile Include="E_therapy.cpp" />
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="Scheduler.cpp" />
