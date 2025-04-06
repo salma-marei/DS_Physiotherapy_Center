@@ -12,7 +12,7 @@ private:
     int nextID;
     const int id;
     const char type;
-    const int appointmentTime;
+    int appointmentTime;
     const int arrivalTime;
     int status;
     int finishTime;
@@ -34,11 +34,8 @@ public:
     void setStatus(int s) { status = s; }
     int getFT() { return finishTime; }
     void setFT(int ft) { finishTime = ft; }
+    void setPT(int pt) { appointmentTime = pt; }
     
-
-    // ha implement hena al required treatment list 
-
-
     void print() {
         cout << "P" << id << " ";
 
@@ -49,9 +46,6 @@ public:
         }
 
         cout << appointmentTime << " " << arrivalTime << endl;
-
-
-
 
     }
     
