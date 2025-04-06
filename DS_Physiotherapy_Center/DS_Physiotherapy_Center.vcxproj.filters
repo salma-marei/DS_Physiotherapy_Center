@@ -69,6 +69,9 @@
     <ClInclude Include="X_therapy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EU_WaitList.h">
+      <Filter>Header Files\Waiting Lists</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Treatment.cpp">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="X_therapy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EU_WaitList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
