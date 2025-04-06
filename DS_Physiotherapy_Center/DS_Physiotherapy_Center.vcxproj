@@ -129,7 +129,8 @@
   <ItemGroup>
     <ClInclude Include="ArrayStack.h" />
     <ClInclude Include="EarlyPList.h" />
-    <ClInclude Include="EU_WaitList.h" />
+    <ClInclude Include="EU_waitlist.h" />
+    <ClInclude Include="E_therapy.h" />
     <ClInclude Include="Patient.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedQueue.h" />
@@ -141,15 +142,18 @@
     <ClInclude Include="Scheduler.h" />
     <ClInclude Include="StackADT.h" />
     <ClInclude Include="Treatment.h" />
-    <ClInclude Include="X_WaitList.h" />
+    <ClInclude Include="U_therapy.h" />
+    <ClInclude Include="X_therapy.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EarlyPList.cpp" />
-    <ClCompile Include="EU_WaitList.cpp" />
+    <ClCompile Include="EU_waitlist.cpp" />
+    <ClCompile Include="E_therapy.cpp" />
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="Treatment.cpp" />
-    <ClCompile Include="X_WaitList.cpp" />
+    <ClCompile Include="U_therapy.cpp" />
+    <ClCompile Include="X_therapy.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
