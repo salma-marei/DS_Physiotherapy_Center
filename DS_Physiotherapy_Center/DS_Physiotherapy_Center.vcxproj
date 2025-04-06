@@ -144,6 +144,7 @@
     <ClInclude Include="Treatment.h" />
     <ClInclude Include="U_therapy.h" />
     <ClInclude Include="X_therapy.h" />
+    <ClInclude Include="X_WaitList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EarlyPList.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="Treatment.cpp" />
     <ClCompile Include="U_therapy.cpp" />
     <ClCompile Include="X_therapy.cpp" />
+    <ClCompile Include="X_WaitList.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
