@@ -54,7 +54,7 @@ void Scheduler::loadPatients(string filename)
 				char TreatmentType;
 				int TreatmentDuration;
 				file >> TreatmentType >> TreatmentDuration;						// reading treatment type and duration
-				treatments[j] = new Treatment(TreatmentType, TreatmentDuration);	// allocating treatments
+				//treatments[j] = new Treatment(TreatmentType, TreatmentDuration);	// allocating treatments
 			}
 			AllList.enqueue(new Patient(PatientType, PT, VT));				// allocating patients
 		}
