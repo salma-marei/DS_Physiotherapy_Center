@@ -25,7 +25,7 @@ bool EarlyPList::reschedule(int Presc) {
 
 	int oldPT = -rescPriority;
 	int newPT = oldPT + (rand() % 10) + 1; //adds to the oldPT a random number between 1-10
-	//rescPatient->setPT(newPT);
+	rescPatient->setPT(newPT);
 	enqueue(rescPatient, -newPT);
 	return true;
 }

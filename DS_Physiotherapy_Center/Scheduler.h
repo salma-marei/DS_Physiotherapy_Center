@@ -19,6 +19,9 @@ private:
 	LinkedQueue<resources*> XRooms;
 	priQueue<Patient*> InTreatmentList;
 	ArrayStack<Patient*> FinishedPatients;
+	int timestep;
 public:
+	Scheduler();
 	//void loadPatients(); only function we need to implement for phase 1.2
+	void simulation();
 };
