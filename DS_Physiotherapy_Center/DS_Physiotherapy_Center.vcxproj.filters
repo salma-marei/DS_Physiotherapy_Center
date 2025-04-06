@@ -9,15 +9,15 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Header Files\DS">
       <UniqueIdentifier>{115d21b2-6b8d-4602-89af-32eaaa2bfe13}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Waiting Lists">
       <UniqueIdentifier>{ca11d35a-e0b7-4023-a904-ac0b7f6c6842}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +60,18 @@
     <ClInclude Include="EarlyPList.h">
       <Filter>Header Files\Waiting Lists</Filter>
     </ClInclude>
+    <ClInclude Include="E_therapy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="U_therapy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X_therapy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EU_WaitList.h">
+      <Filter>Header Files\Waiting Lists</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Treatment.cpp">
@@ -74,7 +86,22 @@
     <ClCompile Include="EarlyPList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="maincpp.cpp">
+<ClCompile Include="maincpp.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+<ClCompile Include="E_therapy.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+<ClCompile Include="U_therapy.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+<ClCompile Include="X_therapy.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+<ClCompile Include="EU_WaitList.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

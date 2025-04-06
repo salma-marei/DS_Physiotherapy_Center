@@ -1,6 +1,7 @@
 #pragma once
 #include"Patient.h"
 #include"resources.h"
+#include"Scheduler.h"
 class Treatment
 {
 	int Duration;
@@ -8,6 +9,7 @@ class Treatment
 	Patient* Patient;
 	resources* AssignedResource;
 public:
+
 	Treatment(int d = 0, int AT = 0);
 	virtual bool CanAssign(resources* AssignedResource)=0;
 	//virtual void MoveToWait(Schedular*schedular)=0;
