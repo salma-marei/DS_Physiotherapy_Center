@@ -1,10 +1,12 @@
 #pragma once
 #include"iostream"
 #include "LinkedQueue.h"
+#include "Treatment.h"
 using namespace std;
 
 
-// ha include class treatment lma rowida tkhalaso
+// ha include class treatment lma rowida tkhalas
+
 
 class Patient {
 
@@ -16,7 +18,7 @@ private:
     const int arrivalTime;
     int status;
     int finishTime;
-    //LinkedQueue<Treatment*> treatments;
+    LinkedQueue<Treatment*> treatments;
 
 public:
 
