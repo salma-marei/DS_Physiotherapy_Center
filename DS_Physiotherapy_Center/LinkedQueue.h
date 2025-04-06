@@ -52,6 +52,7 @@ class LinkedQueue :public QueueADT<T>
 private:
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
+	int counter;
 public:
 	LinkedQueue();
 	bool isEmpty() const;
@@ -59,6 +60,7 @@ public:
 	bool dequeue(T& frntEntry);
 	bool peek(T& frntEntry)  const;
 	~LinkedQueue();
+	int getCount();
 };
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -73,6 +75,7 @@ LinkedQueue<T>::LinkedQueue()
 {
 	backPtr = nullptr;
 	frontPtr = nullptr;
+	counter = 0;
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +113,7 @@ bool LinkedQueue<T>::enqueue(const T& newEntry)
 		backPtr->setNext(newNodePtr); // The queue was not empty
 
 	backPtr = newNodePtr; // New node is the last node now
+	counter++;
 	return true;
 } // end enqueue
 
@@ -139,7 +143,7 @@ bool LinkedQueue<T>::dequeue(T& frntEntry)
 
 	// Free memory reserved for the dequeued node
 	delete nodeToDeletePtr;
-
+	counter--;
 	return true;
 }
 
@@ -182,5 +186,13 @@ LinkedQueue<T>::~LinkedQueue()
 	cout << "\n Is LinkedQueue Empty now?? ==> " << boolalpha << isEmpty();
 	cout << "\nEnding LinkedQueue destructor..." << endl;
 }
+
+template<typename T>
+int LinkedQueue<T>::getCount()
+{
+	return counter;
+}
+
+
 
 #endif
