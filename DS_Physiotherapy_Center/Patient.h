@@ -50,6 +50,9 @@ public:
 
         cout << appointmentTime << " " << arrivalTime << endl;
 
+
+
+
     }
     
     /* ~Patient() {
