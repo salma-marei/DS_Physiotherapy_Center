@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ArrayStack.h" />
+    <ClInclude Include="EarlyPList.h" />
     <ClInclude Include="Patient.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="LinkedQueue.h" />
@@ -136,10 +137,14 @@
     <ClInclude Include="priQueue.h" />
     <ClInclude Include="QueueADT.h" />
     <ClInclude Include="resources.h" />
+    <ClInclude Include="Scheduler.h" />
     <ClInclude Include="StackADT.h" />
     <ClInclude Include="Treatment.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EarlyPList.cpp" />
+    <ClCompile Include="resources.cpp" />
+    <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="Treatment.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
