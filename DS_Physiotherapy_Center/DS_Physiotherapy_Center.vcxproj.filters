@@ -63,8 +63,14 @@
     <ClInclude Include="EU_WaitList.h">
       <Filter>Header Files\Waiting Lists</Filter>
     </ClInclude>
-    <ClInclude Include="X_WaitList.h">
-      <Filter>Header Files\Waiting Lists</Filter>
+    <ClInclude Include="E_therapy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="U_therapy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="X_therapy.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -83,7 +89,13 @@
     <ClCompile Include="EU_WaitList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="X_WaitList.cpp">
+    <ClCompile Include="E_therapy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="U_therapy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="X_therapy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
