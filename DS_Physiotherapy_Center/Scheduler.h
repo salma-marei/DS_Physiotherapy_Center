@@ -1,11 +1,14 @@
 #pragma once
+#include <fstream>
+#include <iostream>
 #include "LinkedQueue.h"
 #include "priQueue.h"
 #include "EarlyPList.h"
 #include "resources.h"
 #include "ArrayStack.h"
 #include "Patient.h"
-
+//class resources;
+//class Patient;
 class Scheduler {
 private:
 	LinkedQueue<Patient*> AllList;
@@ -21,7 +24,5 @@ private:
 	ArrayStack<Patient*> FinishedPatients;
 	int timestep;
 public:
-	Scheduler();
-	//void loadPatients(); only function we need to implement for phase 1.2
-	void simulation();
+	void loadPatients(string filename); //only function we need to implement for phase 1.2
 };

@@ -4,7 +4,7 @@
 //		cout << "gym must have a capacity ";
 //	}
 //}
-resources::resources(int id, ResourceType T, int cap=1) :ID(id), type(T) {
+resources::resources(int id, ResourceType T, int cap) :ID(id), type(T) {
 	isAvailable = true;
 	CurrentOccupants = 0;
 	capacity = cap;

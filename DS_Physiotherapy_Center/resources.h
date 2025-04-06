@@ -11,16 +11,16 @@ private:
 	int CurrentOccupants; // for gym
 public:
 	//resources(int id, ResourceType T) {}
-	resources(int id, ResourceType T, int cap) {}
-	int getID() {}
+	resources(int id, ResourceType T, int cap=1);
+	int getID();
 	ResourceType getType() {
 		return type;
 	}
-	bool getAvailability() {}
-	void setAvailability(bool A) {}
-	int getCapacity() {}
-	int getCurrentOccupancy() {}
-	bool isFull() {}
-	void addpatient() {}
-	void removepatient() {}
+	bool getAvailability();
+	void setAvailability(bool A);
+	int getCapacity();
+	int getCurrentOccupancy();
+	bool isFull();
+	void addpatient();
+	void removepatient();
 };

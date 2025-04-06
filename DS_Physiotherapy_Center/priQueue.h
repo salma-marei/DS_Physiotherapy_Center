@@ -11,7 +11,7 @@ protected:
     priNode<T>* head;
     int counter;
 public:
-    priQueue() : head(nullptr) counter(0) {}
+    priQueue() : head(nullptr), counter(0) {}
 
     ~priQueue() {
         T tmp;

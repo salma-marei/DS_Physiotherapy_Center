@@ -5,8 +5,9 @@
 using namespace std;
 
 
-// ha include class treatment lma rowida tkhalas
 
+// ha include class treatment lma rowida tkhalaso
+class Treatment;
 
 class Patient {
 
@@ -18,7 +19,8 @@ private:
     const int arrivalTime;
     int status;
     int finishTime;
-    LinkedQueue<Treatment*> requiredTreatments;
+
+    LinkedQueue<Treatment*> required_treatment_list;
 
 public:
 
@@ -36,6 +38,13 @@ public:
     void setStatus(int s) { status = s; }
     int getFT() { return finishTime; }
     void setFT(int ft) { finishTime = ft; }
+
+	void enqueueTreatment(Treatment* t) { // lma a3mel enqueue l treatment 
+		required_treatment_list.enqueue(t);
+	}
+
+    // ha implement hena al required treatment list 
+
     void setPT(int pt) { appointmentTime = pt; }
     
     void print() {

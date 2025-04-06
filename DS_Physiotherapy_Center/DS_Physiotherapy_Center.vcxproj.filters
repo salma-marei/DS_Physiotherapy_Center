@@ -86,16 +86,22 @@
     <ClCompile Include="EarlyPList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="E_therapy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="U_therapy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="X_therapy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EU_WaitList.cpp">
+<ClCompile Include="maincpp.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+<ClCompile Include="E_therapy.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+<ClCompile Include="U_therapy.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+<ClCompile Include="X_therapy.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+<ClCompile Include="EU_WaitList.cpp">
+    <Filter>Source Files</Filter>
+</ClCompile>
+
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

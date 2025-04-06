@@ -1,6 +1,6 @@
 #include "Treatment.h"
 
-Treatment::Treatment(int d = 0, int AT = 0) :Patient(nullptr), AssignedResource(nullptr) {
+Treatment::Treatment(int d , int AT ) :Patient(nullptr), AssignedResource(nullptr) {
 	Duration = d;
 	AssignmentTime = AT;
 }
