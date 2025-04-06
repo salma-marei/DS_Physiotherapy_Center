@@ -16,7 +16,7 @@ private:
     const int arrivalTime;
     int status;
     int finishTime;
-    //LinkedQueue<Treatment*> required treatment list;
+    //LinkedQueue<Treatment*> treatments;
 
 public:
 
