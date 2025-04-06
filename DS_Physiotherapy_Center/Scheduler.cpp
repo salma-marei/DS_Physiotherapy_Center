@@ -3,6 +3,11 @@
 #include <iostream>
 #include "Treatment.h"
 
+Scheduler::Scheduler()
+{
+	timestep = 1;
+}
+
 void Scheduler::loadPatients(string filename)
 {
 	ifstream file(filename);

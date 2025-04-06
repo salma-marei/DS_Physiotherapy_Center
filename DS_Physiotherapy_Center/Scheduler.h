@@ -24,5 +24,6 @@ private:
 	ArrayStack<Patient*> FinishedPatients;
 	int timestep;
 public:
+	Scheduler();
 	void loadPatients(string filename); //only function we need to implement for phase 1.2
 };
