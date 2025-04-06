@@ -74,5 +74,8 @@
     <ClCompile Include="EarlyPList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="maincpp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

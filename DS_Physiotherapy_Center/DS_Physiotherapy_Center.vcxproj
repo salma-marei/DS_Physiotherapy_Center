@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EarlyPList.cpp" />
+    <ClCompile Include="maincpp.cpp" />
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="Treatment.cpp" />
