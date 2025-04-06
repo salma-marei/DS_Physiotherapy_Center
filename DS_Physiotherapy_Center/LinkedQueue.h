@@ -49,10 +49,11 @@ Single Node Case:
 template <typename T>
 class LinkedQueue :public QueueADT<T>
 {
-private:
-	Node<T>* backPtr;
+protected: 
 	Node<T>* frontPtr;
+	Node<T>* backPtr;
 	int counter;
+
 public:
 	LinkedQueue();
 	bool isEmpty() const;
