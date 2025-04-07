@@ -1,6 +1,10 @@
 #pragma once
-#include"Patient.h"
-#include"resources.h"
+//#include"Patient.h"
+//#include"resources.h"
+//#include"Scheduler.h"
+class Patient;
+class resources;
+class Scheduler;
 class Treatment
 {
 	int Duration;
@@ -8,32 +12,16 @@ class Treatment
 	Patient* Patient;
 	resources* AssignedResource;
 public:
-	Treatment(int d = 0, int AT = 0) :Patient(nullptr), AssignedResource(nullptr) {
-		Duration = d;
-		AssignmentTime = AT;
-	}
-	virtual bool CanAssign(resources* AssignedResource);
-	//virtual void MoveToWait(Schedular*schedular);
-	void setDuration(int d) {
-		Duration = d;
-	}
-	int getDuration() {
-		return Duration;
-	}
-	void setAssignmentTime(int T) {
-		AssignmentTime = T;
-	}
-	int getAssignmentTime() {
-		return AssignmentTime;
-	}
-	void setPatient(class Patient* p) {
-		Patient = p;
-	}
-	class Patient* getPatient() {
-		return Patient;
-	}
-	void setAssignedResource(resources*AR){
-	   AssignedResource=AR;
-	}
+
+	Treatment(int d = 0, int AT = 0);
+	virtual bool CanAssign(resources* AssignedResource)=0;
+	//virtual void MoveToWait(Schedular*schedular)=0;
+	void setDuration(int d);
+	int getDuration();
+	void setAssignmentTime(int T);
+	int getAssignmentTime();
+	void setPatient(class Patient* p);
+	class Patient* getPatient();
+	void setAssignedResource(resources* AR);
 };
 

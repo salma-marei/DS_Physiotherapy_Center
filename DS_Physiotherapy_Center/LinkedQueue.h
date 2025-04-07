@@ -1,5 +1,4 @@
 #pragma once
-
 /*
 This is a program that implements the queue abstract data type using a linked list.
 The queue is implemented as a chain of linked nodes that has two pointers,
@@ -45,13 +44,16 @@ Single Node Case:
 
 #include "Node.h"
 #include "QueueADT.h"
-
+#include <iostream>
+using namespace std;
 template <typename T>
 class LinkedQueue :public QueueADT<T>
 {
-private:
-	Node<T>* backPtr;
+protected:
 	Node<T>* frontPtr;
+	Node<T>* backPtr;
+	int counter;
+
 public:
 	LinkedQueue();
 	bool isEmpty() const;
@@ -59,6 +61,8 @@ public:
 	bool dequeue(T& frntEntry);
 	bool peek(T& frntEntry)  const;
 	~LinkedQueue();
+	int getCount();
+	void print();
 };
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -73,6 +77,7 @@ LinkedQueue<T>::LinkedQueue()
 {
 	backPtr = nullptr;
 	frontPtr = nullptr;
+	counter = 0;
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -110,6 +115,7 @@ bool LinkedQueue<T>::enqueue(const T& newEntry)
 		backPtr->setNext(newNodePtr); // The queue was not empty
 
 	backPtr = newNodePtr; // New node is the last node now
+	counter++;
 	return true;
 } // end enqueue
 
@@ -139,7 +145,7 @@ bool LinkedQueue<T>::dequeue(T& frntEntry)
 
 	// Free memory reserved for the dequeued node
 	delete nodeToDeletePtr;
-
+	counter--;
 	return true;
 }
 
@@ -172,15 +178,33 @@ LinkedQueue<T>::~LinkedQueue()
 {
 	//Note that the cout statements here is just for learning purpose
 	//They should be normally removed from the destructor
-	cout << "\nStarting LinkedQueue destructor...";
-	cout << "\nFreeing all nodes in the queue...";
+	//cout << "\nStarting LinkedQueue destructor...";
+	//cout << "\nFreeing all nodes in the queue...";
 
 	//Free all nodes in the queue
 	T temp;
 	while (dequeue(temp));
 
-	cout << "\n Is LinkedQueue Empty now?? ==> " << boolalpha << isEmpty();
-	cout << "\nEnding LinkedQueue destructor..." << endl;
+	//cout << "\n Is LinkedQueue Empty now?? ==> " << boolalpha << isEmpty();
+	//cout << "\nEnding LinkedQueue destructor..." << endl;
+	//commented out for ui
 }
+
+template<typename T>
+int LinkedQueue<T>::getCount()
+{
+	return counter;
+}
+template<typename T>
+void LinkedQueue<T>::print()
+{
+	Node<T>* p = frontPtr;
+	while (p)
+	{
+		cout << p->getItem() << ", ";
+		p = p->getNext();
+	}
+}
+
 
 #endif
