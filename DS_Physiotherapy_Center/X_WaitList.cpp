@@ -22,6 +22,5 @@ Patient* X_WaitList::cancel(int id)
 	}
 
 	counter--;
-	Node<Patient*>* current = frontPtr;
 	//while (current && current->getItem()->getID() != id)
 }

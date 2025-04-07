@@ -1,7 +1,10 @@
 #pragma once
-#include"Patient.h"
-#include"resources.h"
-#include"Scheduler.h"
+//#include"Patient.h"
+//#include"resources.h"
+//#include"Scheduler.h"
+class Patient;
+class resources;
+class Scheduler;
 class Treatment
 {
 	int Duration;

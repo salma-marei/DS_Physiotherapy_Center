@@ -4,9 +4,6 @@
 #include "Treatment.h"
 using namespace std;
 
-
-
-// ha include class treatment lma rowida tkhalaso
 class Treatment;
 
 class Patient {
