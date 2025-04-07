@@ -5,5 +5,5 @@ class EU_WaitList : public LinkedQueue<Patient*>
 {
 public:
 	void insertSorted(Patient* patient, int penalty);
-	int calcTreatmentLatency();
+	int calcTreatmentLatency(Treatment* t);
 };
