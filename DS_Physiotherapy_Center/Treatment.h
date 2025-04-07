@@ -12,8 +12,8 @@ public:
 		Duration = d;
 		AssignmentTime = AT;
 	}
-	virtual bool CanAssign(resources* AssignedResource)=0;
-	//virtual void MoveToWait(Schedular*schedular)=0;
+	virtual bool CanAssign(resources* AssignedResource);
+	//virtual void MoveToWait(Schedular*schedular);
 	void setDuration(int d) {
 		Duration = d;
 	}
