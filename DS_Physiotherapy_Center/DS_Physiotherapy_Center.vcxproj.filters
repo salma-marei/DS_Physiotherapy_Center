@@ -1,108 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Header Files\DS">
-      <UniqueIdentifier>{115d21b2-6b8d-4602-89af-32eaaa2bfe13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Waiting Lists">
-      <UniqueIdentifier>{ca11d35a-e0b7-4023-a904-ac0b7f6c6842}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
+    <ClCompile Include="EarlyPList.cpp" />
+    <ClCompile Include="maincpp.cpp" />
+    <ClCompile Include="EU_WaitList.cpp" />
+    <ClCompile Include="E_therapy.cpp" />
+    <ClCompile Include="resources.cpp" />
+    <ClCompile Include="Scheduler.cpp" />
+    <ClCompile Include="Treatment.cpp" />
+    <ClCompile Include="U_therapy.cpp" />
+    <ClCompile Include="X_therapy.cpp" />
+    <ClCompile Include="X_WaitList.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Treatment.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Patient.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="resources.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scheduler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ArrayStack.h">
-      <Filter>Header Files\DS</Filter>
+      <Filter>Lab DS</Filter>
     </ClInclude>
     <ClInclude Include="LinkedList.h">
-      <Filter>Header Files\DS</Filter>
+      <Filter>Lab DS</Filter>
     </ClInclude>
     <ClInclude Include="LinkedQueue.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="priNode.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="priQueue.h">
-      <Filter>Header Files\DS</Filter>
-    </ClInclude>
-    <ClInclude Include="QueueADT.h">
-      <Filter>Header Files\DS</Filter>
+      <Filter>Lab DS</Filter>
     </ClInclude>
     <ClInclude Include="StackADT.h">
-      <Filter>Header Files\DS</Filter>
+      <Filter>Lab DS</Filter>
     </ClInclude>
-    <ClInclude Include="EarlyPList.h">
-      <Filter>Header Files\Waiting Lists</Filter>
+    <ClInclude Include="priNode.h">
+      <Filter>Lab DS</Filter>
     </ClInclude>
-    <ClInclude Include="E_therapy.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Node.h">
+      <Filter>Lab DS</Filter>
+    </ClInclude>
+    <ClInclude Include="priQueue.h">
+      <Filter>Lab DS</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueADT.h">
+      <Filter>Lab DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Patient.h">
+      <Filter>Main CLasses</Filter>
+    </ClInclude>
+    <ClInclude Include="resources.h">
+      <Filter>Main CLasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler.h">
+      <Filter>Main CLasses</Filter>
     </ClInclude>
     <ClInclude Include="U_therapy.h">
-      <Filter>Header Files</Filter>
+      <Filter>Main CLasses\Treatments</Filter>
     </ClInclude>
     <ClInclude Include="X_therapy.h">
-      <Filter>Header Files</Filter>
+      <Filter>Main CLasses\Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="E_therapy.h">
+      <Filter>Main CLasses\Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="Treatment.h">
+      <Filter>Main CLasses\Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="EarlyPList.h">
+      <Filter>New DS</Filter>
     </ClInclude>
     <ClInclude Include="EU_WaitList.h">
-      <Filter>Header Files\Waiting Lists</Filter>
+      <Filter>New DS</Filter>
+    </ClInclude>
+    <ClInclude Include="X_WaitList.h">
+      <Filter>New DS</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Treatment.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scheduler.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="resources.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EarlyPList.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-<ClCompile Include="maincpp.cpp">
-    <Filter>Source Files</Filter>
-</ClCompile>
-<ClCompile Include="E_therapy.cpp">
-    <Filter>Source Files</Filter>
-</ClCompile>
-<ClCompile Include="U_therapy.cpp">
-    <Filter>Source Files</Filter>
-</ClCompile>
-<ClCompile Include="X_therapy.cpp">
-    <Filter>Source Files</Filter>
-</ClCompile>
-<ClCompile Include="EU_WaitList.cpp">
-    <Filter>Source Files</Filter>
-</ClCompile>
-
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <Filter Include="Lab DS">
+      <UniqueIdentifier>{cf907236-90a9-4f6f-84b4-19ddfa4525e2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main CLasses">
+      <UniqueIdentifier>{ff8201e5-93de-403b-a687-e5055a7f3da8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main CLasses\Treatments">
+      <UniqueIdentifier>{1c32c5bc-ce60-4029-a40e-f6650661d4b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="New DS">
+      <UniqueIdentifier>{9c1fe56f-1f81-4633-aa57-1ac65a077f36}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
