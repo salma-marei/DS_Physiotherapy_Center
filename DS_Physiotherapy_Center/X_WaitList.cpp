@@ -2,7 +2,7 @@
 
 Patient* X_WaitList::cancel(int id)
 {
-	if (!counter)
+	if (isEmpty())
 		return nullptr;
 	Patient* p = nullptr;
 	int randNum = rand() % counter + 1;
