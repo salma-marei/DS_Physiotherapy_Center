@@ -26,7 +26,15 @@ private:
 	priQueue<Patient*> InTreatmentList;
 	ArrayStack<Patient*> FinishedPatients;
 	int timestep;
+	int numPatients;
+	int numE, numU, numX;//Total number of devices
+	int pResc;
+	//UI* pUI;
+	string filename;
 public:
 	Scheduler();
 	void loadPatients(string filename); //only function we need to implement for phase 1.2
+	bool isEAvailable();
+	bool isUAvailable();
+	bool isXAvailable();
 };
