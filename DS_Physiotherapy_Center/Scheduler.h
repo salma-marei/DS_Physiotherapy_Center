@@ -26,4 +26,5 @@ private:
 public:
 	Scheduler();
 	void loadPatients(string filename); //only function we need to implement for phase 1.2
+	friend class UI;
 };
