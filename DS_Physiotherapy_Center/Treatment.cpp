@@ -1,8 +1,9 @@
 #include "Treatment.h"
 
-Treatment::Treatment(int d , int AT ) :Patient(nullptr), AssignedResource(nullptr) {
+Treatment::Treatment(int d , int AT ) : AssignedResource(nullptr) {
 	Duration = d;
 	AssignmentTime = AT;
+	AssignedPatient = nullptr;
 }
 void Treatment::setDuration(int d) {
 	Duration = d;
@@ -16,12 +17,22 @@ void Treatment::setAssignmentTime(int T) {
 int Treatment::getAssignmentTime() {
 	return AssignmentTime;
 }
-void Treatment::setPatient(class Patient* p) {
-	Patient = p;
-}
-class Patient* Treatment::getPatient() {
-	return Patient;
-}
+
 void Treatment::setAssignedResource(resources* AR) {
 	AssignedResource = AR;
+}
+
+void Treatment::setAssignedPatient(Patient* p)
+{
+	AssignedPatient = p;
+}
+
+Patient* Treatment::getAssignedPatient()
+{
+	return AssignedPatient;
+}
+
+resources* Treatment::getAssignedResource()
+{
+	return AssignedResource;
 }

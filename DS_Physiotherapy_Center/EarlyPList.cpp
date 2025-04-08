@@ -3,24 +3,25 @@ bool EarlyPList::reschedule(int Presc) {
 	int randNum = rand() % 101;
 	if (isEmpty() || randNum >= Presc) return false;
 	int totalPatients = getCount();
-	int randPat = rand() % totalPatients; //generates number from 0->totalPatients-1
+	int randPat = rand() % totalPatients + 1; //generates number from 1->totalPatients
 
 	Patient* rescPatient;
 	int rescPriority;
-	Patient* tempPatient;
-	int tempPri;
-	priQueue<Patient*> tempQueue;
-
-	for (int i = 0; i < randPat; i++) {
-		dequeue(tempPatient, tempPri);
-		tempQueue.enqueue(tempPatient, tempPri);
+	priNode<Patient*>* current = head;
+	if (randPat == 1) {
+		rescPatient = head->getItem(rescPriority);
+		head = head->getNext();
+		counter--;
 	}
-
-	dequeue(rescPatient, rescPriority);
-
-	while (!tempQueue.isEmpty()) {
-		tempQueue.dequeue(tempPatient, tempPri);
-		enqueue(tempPatient, tempPri);
+	else {
+		for (int i = 0; i < randPat - 2; i++) {
+			current = current->getNext();
+		}
+		priNode<Patient*>* temp = current->getNext();
+		current->setNext(temp->getNext());
+		rescPatient = temp->getItem(rescPriority);
+		counter--;
+		delete temp;
 	}
 
 	int oldPT = -rescPriority;

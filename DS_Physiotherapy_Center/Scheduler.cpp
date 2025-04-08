@@ -60,3 +60,19 @@ void Scheduler::loadPatients(string filename)
 		}
 		file.close();
 }
+
+bool Scheduler::isEAvailable()
+{
+	return ! EDevices.isEmpty();
+}
+
+bool Scheduler::isUAvailable()
+{
+	return !UDevices.isEmpty();
+}
+
+bool Scheduler::isXAvailable()
+{
+	return !XRooms.isEmpty();
+}
+

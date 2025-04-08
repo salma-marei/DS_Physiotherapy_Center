@@ -25,12 +25,13 @@ void EU_WaitList::insertSorted(Patient* patient, int penalty)
 	}
 }
 
-int EU_WaitList::calcTreatmentLatency()
+int EU_WaitList::calcTreatmentLatency(Treatment* t)
 {
 	int treatmentLatency = 0;
 	Node<Patient*>* current = frontPtr;
-	/*while (current != nullptr) {
-		get treatment time of patient and add it
-	}	*/
+	while (current) {
+		treatmentLatency += current->getItem()->getTreatmentTime(t);
+		current = current->getNext();
+	}	
 	return treatmentLatency;
 }

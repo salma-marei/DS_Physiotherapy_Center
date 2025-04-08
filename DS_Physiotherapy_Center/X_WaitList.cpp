@@ -2,7 +2,7 @@
 
 Patient* X_WaitList::cancel(int id)
 {
-	if (!counter)
+	if (isEmpty())
 		return nullptr;
 	Patient* p = nullptr;
 	int randNum = rand() % counter + 1;
@@ -11,16 +11,19 @@ Patient* X_WaitList::cancel(int id)
 	{
 		p = frontPtr->getItem();
 		frontPtr = frontPtr->getNext();
+		counter--;
+		if (counter == 0) backPtr = nullptr;
+		return p;
 	}
-	if (counter == randNum)
-	{
-		backPtr = nullptr;
-	}
-	for (int i = 0; i < counter - 2; i++)
+	for (int i = 0; i < randNum-2; i++)
 	{
 		current = current->getNext();
 	}
-
+	Node<Patient*>* temp = current->getNext();
+	current->setNext(temp->getNext());
+	p = temp->getItem();
+	delete temp;
 	counter--;
-	//while (current && current->getItem()->getID() != id)
+	if (!current->getNext()) backPtr = current;
+	return p;
 }
