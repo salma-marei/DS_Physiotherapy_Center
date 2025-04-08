@@ -7,6 +7,7 @@ class resources;
 class Scheduler;
 class Treatment
 {
+protected:
 	int Duration;
 	int AssignmentTime;
 	resources* AssignedResource;

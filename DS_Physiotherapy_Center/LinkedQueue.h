@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 /*
 This is a program that implements the queue abstract data type using a linked list.
 The queue is implemented as a chain of linked nodes that has two pointers,
@@ -44,12 +45,11 @@ Single Node Case:
 
 #include "Node.h"
 #include "QueueADT.h"
-#include <iostream>
 using namespace std;
 template <typename T>
 class LinkedQueue :public QueueADT<T>
 {
-protected:
+protected: 
 	Node<T>* frontPtr;
 	Node<T>* backPtr;
 	int counter;
@@ -201,7 +201,7 @@ void LinkedQueue<T>::print()
 	Node<T>* p = frontPtr;
 	while (p)
 	{
-		cout << p->getItem() << ", ";
+		cout << p->getItem()<<", ";
 		p = p->getNext();
 	}
 }

@@ -22,10 +22,10 @@ int resources::getCapacity() {
 	if (type == GymRoom) {
 		return capacity;
 	}
-	/*else {
+	else {
 		cout << "error! attempted to get capacity of other devices ";
 		return -1;
-	}*/
+	}
 
 	//mesh arfa mfrod a3ml el validations di wla laa, same for kol el validations ele taht
 }
@@ -33,18 +33,18 @@ int resources::getCurrentOccupancy() {
 	if (type == GymRoom) {
 		return CurrentOccupants;
 	}
-	/*else {
+	else {
 		cout << "error! attempted to get current occupancy of other devices ";
 		return -1;
-	}*/
+	}
 
 	if (type == GymRoom) {
 		return CurrentOccupants;
 	}
-	/*else {
+	else {
 		cout << "error! attempted to get current occupancy of other devices ";
 		return -1;
-	}*/
+	}
 }
 bool resources::isFull() {
 	if (type == GymRoom) {
@@ -69,4 +69,13 @@ void resources::removepatient() {
 	if (type == GymRoom && CurrentOccupants > 0) {
 		CurrentOccupants--;
 	}
+}
+
+ostream& operator<<(ostream& out, resources* R)
+{
+	if (R->getType() != GymRoom)
+		out << R->getID();
+	else
+		out << "R" << R->getID() << "[" << R->getCurrentOccupancy() << "," << R->getCapacity() << "]";
+	return out;
 }

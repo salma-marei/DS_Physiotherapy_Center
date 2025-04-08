@@ -1,4 +1,5 @@
 #include "EU_waitlist.h"
+
 void EU_WaitList::insertSorted(Patient* patient, int penalty)
 {
 	Node<Patient*>* newNode = new Node<Patient*>(patient);

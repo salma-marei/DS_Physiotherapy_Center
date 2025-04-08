@@ -64,6 +64,13 @@ public:
 	int getCount() {
 		return counter;
 	}
+	void print()
+	{
+		for (int i = top; i >= 0; i--)
+		{
+			cout << items[i]<<", ";
+		}
+	}
 }; // end ArrayStack
 
 #endif

@@ -7,9 +7,9 @@
 #include "resources.h"
 #include "ArrayStack.h"
 #include "Patient.h"
+#include "UI.h"
 #include "EU_WaitList.h"
 #include "X_WaitList.h"
-
 //class resources;
 //class Patient;
 class Scheduler {
@@ -29,9 +29,21 @@ private:
 	int numPatients;
 	int numE, numU, numX;//Total number of devices
 	int pResc;
-	//UI* pUI;
+	UI* pUI;
 	string filename;
 public:
 	Scheduler();
-	void loadPatients(string filename); //only function we need to implement for phase 1.2
+	void loadPatients(); //only function we need to implement for phase 1.2
+	void simulate();
+	void RandomWaitingEnqueue(Patient* p);
+	Patient* RandomWaitingDequeue();
+	void AddToWait_U(Patient* p);
+	void AddToWait_E(Patient* p);
+	void AddToWait_X(Patient* p);
+	bool isEAvailable();
+	bool isUAvailable();
+	bool isXAvailable();
+	void checkAllList();
+
+	friend class UI;
 };

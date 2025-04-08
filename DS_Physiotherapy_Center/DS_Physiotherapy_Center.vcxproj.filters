@@ -11,6 +11,8 @@
     <ClCompile Include="U_therapy.cpp" />
     <ClCompile Include="X_therapy.cpp" />
     <ClCompile Include="X_WaitList.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="Patient.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayStack.h">
@@ -67,6 +69,7 @@
     <ClInclude Include="X_WaitList.h">
       <Filter>New DS</Filter>
     </ClInclude>
+    <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Lab DS">

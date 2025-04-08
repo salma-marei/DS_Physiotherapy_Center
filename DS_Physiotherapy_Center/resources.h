@@ -24,3 +24,4 @@ public:
 	void addpatient();
 	void removepatient();
 };
+ostream& operator << (ostream& out, resources* R);
