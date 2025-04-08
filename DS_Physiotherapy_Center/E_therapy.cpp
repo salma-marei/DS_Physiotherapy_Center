@@ -9,5 +9,5 @@ bool E_therapy::CanAssign(Scheduler* s)
 
 void E_therapy::MoveToWait(Scheduler* scheduler)
 {
-	//scheduler->AddToWait_E(AssignedPatient);
+	scheduler->AddToWait_E(AssignedPatient);
 }
