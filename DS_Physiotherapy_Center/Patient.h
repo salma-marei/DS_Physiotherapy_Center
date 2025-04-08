@@ -2,6 +2,9 @@
 #include"iostream"
 #include "LinkedQueue.h"
 #include "Treatment.h"
+#include "X_therapy.h"
+#include "E_therapy.h"
+#include "U_therapy.h"
 using namespace std;
 
 class Treatment;
@@ -16,8 +19,7 @@ private:
     const int arrivalTime;
     int status;
     int finishTime;
-
-    LinkedQueue<Treatment*> required_treatment_list;
+    LinkedQueue<Treatment*> treatmentList;
 
 public:
 
@@ -37,8 +39,20 @@ public:
     void setFT(int ft) { finishTime = ft; }
 
 	void enqueueTreatment(Treatment* t) { // lma a3mel enqueue l treatment 
-		required_treatment_list.enqueue(t);
+		treatmentList.enqueue(t);
 	}
+
+    Treatment* peekCurrentTreatment() {
+        Treatment* currentTreatment = nullptr;
+        treatmentList.peek(currentTreatment);
+        return currentTreatment;
+    }
+
+    Treatment* dequeueTreatment() {
+        Treatment* t = nullptr;
+        treatmentList.dequeue(t);
+        return t;
+    }
 
     // ha implement hena al required treatment list 
 
@@ -55,6 +69,26 @@ public:
 
         cout << appointmentTime << " " << arrivalTime << endl;
 
+    }
+
+    int getTreatmentTime(Treatment* type) {
+        LinkedQueue<Treatment*> temp;
+        int time = 0;
+        Treatment* t = nullptr;
+        treatmentList.dequeue(t);
+        while (t)
+        {
+            temp.enqueue(t);
+            if (dynamic_cast<X_therapy*>(t) && dynamic_cast<X_therapy*>(type))
+                time = t->getDuration();
+            else if (dynamic_cast<U_therapy*>(t) && dynamic_cast<U_therapy*>(type))
+                time = t->getDuration();
+            else if (dynamic_cast<E_therapy*>(t) && dynamic_cast<E_therapy*>(type))
+                time = t->getDuration();
+            t = nullptr;
+            treatmentList.dequeue(t);
+        }
+        return time;
     }
     
     /* ~Patient() {

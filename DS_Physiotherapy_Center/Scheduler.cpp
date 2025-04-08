@@ -41,7 +41,7 @@ void Scheduler::loadPatients(string filename)
 		
 		int numPatients;
 		file >> numPatients;
-		Treatment* treatments[3];// reading number of patients
+		Treatment* treatments[3];
 		treatments[0] = nullptr;
 		treatments[1] = nullptr;
 		treatments[2] = nullptr;
@@ -60,3 +60,19 @@ void Scheduler::loadPatients(string filename)
 		}
 		file.close();
 }
+
+bool Scheduler::isEAvailable()
+{
+	return ! EDevices.isEmpty();
+}
+
+bool Scheduler::isUAvailable()
+{
+	return !UDevices.isEmpty();
+}
+
+bool Scheduler::isXAvailable()
+{
+	return !XRooms.isEmpty();
+}
+
