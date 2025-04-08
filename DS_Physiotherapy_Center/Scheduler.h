@@ -7,6 +7,9 @@
 #include "resources.h"
 #include "ArrayStack.h"
 #include "Patient.h"
+#include "EU_WaitList.h"
+#include "X_WaitList.h"
+
 //class resources;
 //class Patient;
 class Scheduler {
@@ -14,9 +17,9 @@ private:
 	LinkedQueue<Patient*> AllList;
 	EarlyPList EarlyList;
 	priQueue<Patient*> LateList;
-	/* EU_WaitList UWaitList
-	* EU_WaitList EWaitList
-	X_WaitList XWaitList*/
+	EU_WaitList UWaitList;
+	EU_WaitList EWaitList;
+	X_WaitList XWaitList;
 	LinkedQueue<resources*> EDevices;
 	LinkedQueue<resources*> UDevices;
 	LinkedQueue<resources*> XRooms;
