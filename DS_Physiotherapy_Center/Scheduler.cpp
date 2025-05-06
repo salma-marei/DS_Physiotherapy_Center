@@ -271,7 +271,7 @@ void Scheduler::moveFromInTreatment()
 		InTreatmentList.dequeue(p, priority);
 
 		Treatment* t = nullptr;
-		t = p->dequeueTreatment();
+		p->dequeueTreatment(t);
 		resources* r= t->getAssignedResource();
 		t->setAssignedResource(nullptr);
 		switch (r->getType())
