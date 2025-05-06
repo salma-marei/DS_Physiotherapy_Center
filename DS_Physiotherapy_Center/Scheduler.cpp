@@ -147,13 +147,20 @@ void Scheduler::generateOutPutFile()
 
 void Scheduler::simulate()
 {
-	FromAllToLists();
-	CheckEarlyandLateLists();
-	moveFromInTreatment();
-	assign_U();
-	assign_E();
-	assign_X();
-	//while (FinishedPatients.getCount()<numPatients)
+	loadPatients();
+	while (FinishedPatients.getCount() < numPatients) {
+		FromAllToLists();
+		CheckEarlyandLateLists();
+		moveFromInTreatment();
+		assign_E();
+		assign_U();
+		assign_X();
+		EarlyList.reschedule(pResc); //need to check
+		XWaitList.cancel(); //need to check 
+		pUI->printInterface();
+		timestep++;
+	}
+
 	//{
 	//	checkAllList();
 	//	int x = rand() % 100;
@@ -212,9 +219,6 @@ void Scheduler::simulate()
 	//	{
 	//		EarlyList.reschedule(pResc); // returns true if rescheduling happened false otherwise
 	//	}
-		
-			pUI->printInterface();
-		timestep++;
 	//}
 }
 
