@@ -310,40 +310,81 @@ void Scheduler::moveFromInTreatment()
 	}
 
 }
-void Scheduler::assign_E(int timestep, resources* eDevices, Patient* p)
+void Scheduler::assign_E()
 {
-
+	Patient* p = nullptr;
+	resources* eDevices = nullptr;
 	while (isEAvailable()) {
+		p = nullptr;
+		eDevices = nullptr;
 		EWaitList.dequeue(p);
+		if (!p)
+			return;
 		EDevices.dequeue(eDevices);
+		//if (!eDevices)
+			//return;
+		eDevices->setAvailability(false);
 		p->peekCurrentTreatment()->setAssignedResource(eDevices);
 		p->peekCurrentTreatment()->setAssignmentTime(timestep);
 		//isEAvailable() == false;
 		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
-		InTreatmentList.enqueue(p, finishTime);
+		InTreatmentList.enqueue(p, - finishTime);
 		p->setStatus(Patient::SERV);
 	}
 }
 
-void Scheduler::assign_U(int timestep, resources* uDevices, Patient* p)
+void Scheduler::assign_U()
 {
+	Patient* p=nullptr;
+	resources* uDevices = nullptr;
 	while (isUAvailable()) {
+		p = nullptr;
+		uDevices = nullptr;
 		UWaitList.dequeue(p);
+		if (!p)
+			return;
 		UDevices.dequeue(uDevices);
+		//if (!uDevices)
+			//return;
+		uDevices->setAvailability(false);
 		p->peekCurrentTreatment()->setAssignedResource(uDevices);
 		p->peekCurrentTreatment()->setAssignmentTime(timestep);
 		//isUAvailable() == false;
 		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
-		InTreatmentList.enqueue(p, finishTime);
+		InTreatmentList.enqueue(p, - finishTime);
 		p->setStatus(Patient::SERV);
 	}
 }
 
-void Scheduler::assign_X(int timestep, resources* UDevices, Patient* p)
-{
+void Scheduler::assign_X() {
+	Patient* p = nullptr;
+	resources* xDevices = nullptr;
+	//XRooms.getCount();
+	while (isXAvailable()) {
+		p = nullptr;
+		xDevices = nullptr;
+		XWaitList.dequeue(p);
+		if (!p)
+			return;
+		//XRooms.dequeue(xDevices);
+		XRooms.peek(xDevices);
+		//if (!xDevices)
+			//return;
+		p->peekCurrentTreatment()->setAssignedResource(xDevices);
+		p->peekCurrentTreatment()->setAssignmentTime(timestep);
+		xDevices->addpatient();
+		//isUAvailable() == false;
+		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
+		InTreatmentList.enqueue(p, - finishTime);
+		p->setStatus(Patient::SERV);
+		if (xDevices->isFull())
+		{
+			xDevices->setAvailability(false);
+			XRooms.dequeue(xDevices);
+		}
 
+	}
 }
-
 
 
 void Scheduler::CheckEarlyandLateLists()
@@ -413,8 +454,6 @@ void Scheduler::RPhandling(Patient* p)
 
 	while (temp.dequeue(t)) p->enqueueTreatment(t);
 }
-
-
 
 //delete
 Patient* Scheduler::RandomWaitingDequeue()
