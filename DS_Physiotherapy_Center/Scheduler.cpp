@@ -296,6 +296,12 @@ void Scheduler::moveFromInTreatment()
 
 		Treatment* t = nullptr;
 		t= p->dequeueTreatment();
+		if (!t) {
+			p = nullptr;
+			InTreatmentList.peek(p, priority);
+			priority = -priority;
+			continue; // skip this loop iteration
+		}
 		resources* r= t->getAssignedResource();
 		t->setAssignedResource(nullptr);
 		switch (r->getType())
