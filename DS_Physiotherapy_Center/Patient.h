@@ -25,18 +25,28 @@ private:
     const int arrivalTime;
     Status status;
     int finishTime;
+    int WT;
+	int TT;
+    int startWait;
+    int endWait;
+    bool cancelled;
+    bool rescheduled;
     //resources* currentResource;
     LinkedQueue<Treatment*> treatmentList;
 
 public:
-
+    
     Patient(char t, int pt, int vt) :
         id(++nextID),type(t), appointmentTime(pt), arrivalTime(vt),
         status(IDLE), finishTime(-1) 
     {
+		cancelled = false;
+		rescheduled = false;
+        WT = 0;
+        TT = 0;
         //currentResource = nullptr;
     }
-
+    int calcTT();
 
     //setters w getters l kol al data members 
     int getID() { return id; }
@@ -47,6 +57,16 @@ public:
     void setStatus(Status s) { status = s; }
     int getFT() { return finishTime; }
     void setFT(int ft) { finishTime = ft; }
+	int getWT() { return WT; }
+	void setWT(int wt) { WT = wt; }
+	int getStartWait() { return startWait; }
+	void setStartWait(int st) { startWait = st; }
+	int getendWait() { return endWait; }
+	void setendWait(int et) { endWait = et; }
+    bool getcancelled () {return cancelled;}
+    bool getrescheduled() { return rescheduled;  }
+    void setCancelled(bool canc);
+    void setRescheduled(bool resc);
 
 	bool enqueueTreatment(Treatment* t) { // lma a3mel enqueue l treatment 
 		return treatmentList.enqueue(t);

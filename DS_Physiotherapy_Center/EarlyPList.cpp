@@ -28,5 +28,6 @@ bool EarlyPList::reschedule(int Presc) {
 	int newPT = oldPT + (rand() % 10) + 1; //adds to the oldPT a random number between 1-10
 	rescPatient->setPT(newPT);
 	enqueue(rescPatient, -newPT);
+	rescPatient->setRescheduled(true);
 	return true;
 }

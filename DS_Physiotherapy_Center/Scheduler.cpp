@@ -79,6 +79,71 @@ void Scheduler::loadPatients()
 		file.close();
 }
 
+void Scheduler::generateOutPutFile()
+{
+	ofstream outfile("outputfile.txt");
+	if (!outfile.is_open())
+	{
+		cout << "error opening file";
+		return;
+	}
+	outfile << "PID \t" << "Ptype \t" << "PT \t" << "VT \t" << "FT \t" << "WT \t" << "TT \t"
+	<< "Cancel \t" << "Reschedule \t" << endl;
+	Patient* p = nullptr;	
+	int totalPatients=0, numNPatients=0, numRPatients=0;
+	int totalWT = 0, totalTT = 0, latePenaltySum = 0;
+	int earlyCount = 0, lateCount = 0, cancelCount = 0, rescCount = 0;
+	int totalNWT = 0, totalRWT = 0;
+	int totalNTT = 0, totalRTT = 0;
+	ArrayStack <Patient*> tempstack;
+	while (!FinishedPatients.isEmpty()) {
+		FinishedPatients.pop(p);
+	
+		outfile << p->getID() << "\t" << p->getType() << "\t" << p->getPT() << "\t" << p->getVT() << "\t" << p->getFT() << "\t"
+	 << p->getWT() << "\t" << p->calcTT() << "\t" << (p->getcancelled() ? "T" : "F") << "\t" << (p->getrescheduled() ? "T" : "F");
+
+		totalPatients++;
+		totalWT += p->getWT();
+		totalTT += p->calcTT();
+		if (p->getType() == 'N') {
+			numNPatients++;
+			totalNWT += p->getWT();
+			//totalNTT += p->getTreatmentTime();
+		}
+		if (p->getType() == 'R') {
+			numRPatients++;
+			totalRWT += p->getWT();
+			//totalNTT += p->getTreatmentTime();
+		}
+		if (p->getVT() < p->getPT()) earlyCount++;
+		if (p->getVT() > p->getPT())
+		{
+			lateCount++;
+			latePenaltySum += (p->getVT() - p->getPT() + 1) / 2; 
+		}
+		if (p->getcancelled()) cancelCount++;
+		if (p->getrescheduled()) rescCount++;
+
+
+		tempstack.push(p);
+	}
+	while (!tempstack.isEmpty()) {
+		tempstack.pop(p);
+		FinishedPatients.push(p);
+	}
+	outfile << "total number of timesteps = " << timestep << endl;
+	outfile << "total number of all, N, R patients = " << totalPatients << "/t " << numNPatients << "/t " << numRPatients << endl;
+	outfile << "Average total waiting time for all, N, and R patients = " << (totalWT / totalPatients) << "/t " << (totalNWT / numNPatients) 
+    << "/t " << (totalRWT / numRPatients) << endl;
+	outfile << "Average total treatment time for all, N, and R patients = " << (totalTT / totalPatients) << "/t " << (totalNTT / numNPatients)
+	<< "/t " << (totalRTT / numRPatients) << endl;
+	outfile << "Percentage of patients of an accepted cancellation (%) = " << ((float)cancelCount / totalPatients) * 100 << endl;
+	outfile << "Percentage of patients of an accepted reschedule (%) = " << ((float)rescCount / totalPatients) * 100 << endl;
+	outfile << "Percentage of early patients (%) = " << ((float)earlyCount / totalPatients) * 100 << endl;
+	outfile << "Percentage of late patients (%) = " << ((float)lateCount / totalPatients) * 100 << endl;
+	outfile << "Average late penalty = " << (latePenaltySum / lateCount) << "timestep(s)" << endl;
+}
+
 void Scheduler::simulate()
 {
 	FromAllToLists();
@@ -169,6 +234,7 @@ void Scheduler::AddToWait_U(Patient* p)
 		int penalty = (p->getVT() - p->getPT()) / 2;
 		UWaitList.insertSorted(p, penalty);
 	}
+	p->setStartWait(timestep); // set start wait time
 }
 
 void Scheduler::AddToWait_E(Patient* p)
@@ -180,6 +246,7 @@ void Scheduler::AddToWait_E(Patient* p)
 		int penalty = (p->getVT() - p->getPT()) / 2;
 		EWaitList.insertSorted(p, penalty);
 	}
+	p->setStartWait(timestep); // set start wait time
 }
 
 void Scheduler::AddToWait_X(Patient* p)
@@ -191,6 +258,7 @@ void Scheduler::AddToWait_X(Patient* p)
 		int penalty = (p->getVT() - p->getPT()) / 2;
 		XWaitList.insertSorted(p, penalty);
 	}
+	p->setStartWait(timestep); // set start wait time
 }
 
 bool Scheduler::isEAvailable()
