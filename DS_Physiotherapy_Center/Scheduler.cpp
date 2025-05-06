@@ -411,6 +411,10 @@ void Scheduler::assign_X() {
 			return;
 		//XRooms.dequeue(xDevices);
 		XRooms.peek(xDevices);
+
+		if (p == nullptr || xDevices == nullptr || p->peekCurrentTreatment() == nullptr)
+			continue; // skip this patient safely
+
 		//if (!xDevices)
 			//return;
 		p->peekCurrentTreatment()->setAssignedResource(xDevices);
@@ -442,17 +446,21 @@ void Scheduler::CheckEarlyandLateLists()
 	{
 		EarlyList.dequeue(p, time);
 		Treatment* treatment = p->peekCurrentTreatment();
+		if (treatment != nullptr)
 		treatment->MoveToWait(this);
 		p = nullptr;
 		EarlyList.peek(p, time);
 		time = -time;
 	}
+	p = nullptr;
+
 	LateList.peek(p, time);
 	time = -time;
 	while (p && time <= timestep)
 	{
 		LateList.dequeue(p, time);
 		Treatment* treatment = p->peekCurrentTreatment();
+		if (treatment != nullptr)
 		treatment->MoveToWait(this);
 		p = nullptr;
 		LateList.peek(p, time);
