@@ -79,11 +79,87 @@ void Scheduler::loadPatients()
 		file.close();
 }
 
+void Scheduler::generateOutPutFile()
+{
+	ofstream outfile("outputfile.txt");
+	if (!outfile.is_open())
+	{
+		cout << "error opening file";
+		return;
+	}
+	outfile << "PID \t" << "Ptype \t" << "PT \t" << "VT \t" << "FT \t" << "WT \t" << "TT \t"
+	<< "Cancel \t" << "Reschedule \t" << endl;
+	Patient* p = nullptr;	
+	int totalPatients=0, numNPatients=0, numRPatients=0;
+	int totalWT = 0, totalTT = 0, latePenaltySum = 0;
+	int earlyCount = 0, lateCount = 0, cancelCount = 0, rescCount = 0;
+	int totalNWT = 0, totalRWT = 0;
+	int totalNTT = 0, totalRTT = 0;
+	ArrayStack <Patient*> tempstack;
+	while (!FinishedPatients.isEmpty()) {
+		FinishedPatients.pop(p);
+	
+		outfile << p->getID() << "\t" << p->getType() << "\t" << p->getPT() << "\t" << p->getVT() << "\t" << p->getFT() << "\t"
+	 << p->getWT() << "\t" << p->calcTT() << "\t" << (p->getcancelled() ? "T" : "F") << "\t" << (p->getrescheduled() ? "T" : "F");
+
+		totalPatients++;
+		totalWT += p->getWT();
+		totalTT += p->calcTT();
+		if (p->getType() == 'N') {
+			numNPatients++;
+			totalNWT += p->getWT();
+			//totalNTT += p->getTreatmentTime();
+		}
+		if (p->getType() == 'R') {
+			numRPatients++;
+			totalRWT += p->getWT();
+			//totalNTT += p->getTreatmentTime();
+		}
+		if (p->getVT() < p->getPT()) earlyCount++;
+		if (p->getVT() > p->getPT())
+		{
+			lateCount++;
+			latePenaltySum += (p->getVT() - p->getPT() + 1) / 2; 
+		}
+		if (p->getcancelled()) cancelCount++;
+		if (p->getrescheduled()) rescCount++;
+
+
+		tempstack.push(p);
+	}
+	while (!tempstack.isEmpty()) {
+		tempstack.pop(p);
+		FinishedPatients.push(p);
+	}
+	outfile << "total number of timesteps = " << timestep << endl;
+	outfile << "total number of all, N, R patients = " << totalPatients << "/t " << numNPatients << "/t " << numRPatients << endl;
+	outfile << "Average total waiting time for all, N, and R patients = " << (totalWT / totalPatients) << "/t " << (totalNWT / numNPatients) 
+    << "/t " << (totalRWT / numRPatients) << endl;
+	outfile << "Average total treatment time for all, N, and R patients = " << (totalTT / totalPatients) << "/t " << (totalNTT / numNPatients)
+	<< "/t " << (totalRTT / numRPatients) << endl;
+	outfile << "Percentage of patients of an accepted cancellation (%) = " << ((float)cancelCount / totalPatients) * 100 << endl;
+	outfile << "Percentage of patients of an accepted reschedule (%) = " << ((float)rescCount / totalPatients) * 100 << endl;
+	outfile << "Percentage of early patients (%) = " << ((float)earlyCount / totalPatients) * 100 << endl;
+	outfile << "Percentage of late patients (%) = " << ((float)lateCount / totalPatients) * 100 << endl;
+	outfile << "Average late penalty = " << (latePenaltySum / lateCount) << "timestep(s)" << endl;
+}
+
 void Scheduler::simulate()
 {
-	FromAllToLists();
-	
-	//while (FinishedPatients.getCount()<numPatients)
+	loadPatients();
+	while (FinishedPatients.getCount() < numPatients) {
+		FromAllToLists();
+		CheckEarlyandLateLists();
+		moveFromInTreatment();
+		assign_E();
+		assign_U();
+		assign_X();
+		EarlyList.reschedule(pResc); //need to check
+		XWaitList.cancel(); //need to check 
+		pUI->printInterface();
+		timestep++;
+	}
+
 	//{
 	//	checkAllList();
 	//	int x = rand() % 100;
@@ -142,9 +218,6 @@ void Scheduler::simulate()
 	//	{
 	//		EarlyList.reschedule(pResc); // returns true if rescheduling happened false otherwise
 	//	}
-		
-			pUI->printInterface();
-		timestep++;
 	//}
 }
 
@@ -169,6 +242,7 @@ void Scheduler::AddToWait_U(Patient* p)
 		int penalty = (p->getVT() - p->getPT()) / 2;
 		UWaitList.insertSorted(p, penalty);
 	}
+	p->setStartWait(timestep); // set start wait time
 }
 
 void Scheduler::AddToWait_E(Patient* p)
@@ -180,6 +254,7 @@ void Scheduler::AddToWait_E(Patient* p)
 		int penalty = (p->getVT() - p->getPT()) / 2;
 		EWaitList.insertSorted(p, penalty);
 	}
+	p->setStartWait(timestep); // set start wait time
 }
 
 void Scheduler::AddToWait_X(Patient* p)
@@ -191,6 +266,7 @@ void Scheduler::AddToWait_X(Patient* p)
 		int penalty = (p->getVT() - p->getPT()) / 2;
 		XWaitList.insertSorted(p, penalty);
 	}
+	p->setStartWait(timestep); // set start wait time
 }
 
 bool Scheduler::isEAvailable()
@@ -310,42 +386,81 @@ void Scheduler::moveFromInTreatment()
 	}
 
 }
-void Scheduler::assign_E(int timestep, resources* eDevices)
+void Scheduler::assign_E()
 {
-	Patient* p;
+	Patient* p = nullptr;
+	resources* eDevices = nullptr;
 	while (isEAvailable()) {
+		p = nullptr;
+		eDevices = nullptr;
 		EWaitList.dequeue(p);
-		if (!p) return;
+		if (!p)
+			return;
 		EDevices.dequeue(eDevices);
-		if (!eDevices) return;
+		//if (!eDevices)
+			//return;
+		eDevices->setAvailability(false);
 		p->peekCurrentTreatment()->setAssignedResource(eDevices);
 		p->peekCurrentTreatment()->setAssignmentTime(timestep);
 		//isEAvailable() == false;
 		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
-		InTreatmentList.enqueue(p, finishTime);
+		InTreatmentList.enqueue(p, - finishTime);
 		p->setStatus(Patient::SERV);
 	}
 }
 
-void Scheduler::assign_U(int timestep, resources* uDevices, Patient* p)
+void Scheduler::assign_U()
 {
+	Patient* p=nullptr;
+	resources* uDevices = nullptr;
 	while (isUAvailable()) {
+		p = nullptr;
+		uDevices = nullptr;
 		UWaitList.dequeue(p);
+		if (!p)
+			return;
 		UDevices.dequeue(uDevices);
+		//if (!uDevices)
+			//return;
+		uDevices->setAvailability(false);
 		p->peekCurrentTreatment()->setAssignedResource(uDevices);
 		p->peekCurrentTreatment()->setAssignmentTime(timestep);
 		//isUAvailable() == false;
 		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
-		InTreatmentList.enqueue(p, finishTime);
+		InTreatmentList.enqueue(p, - finishTime);
 		p->setStatus(Patient::SERV);
 	}
 }
 
-void Scheduler::assign_X(int timestep, resources* UDevices, Patient* p)
-{
+void Scheduler::assign_X() {
+	Patient* p = nullptr;
+	resources* xDevices = nullptr;
+	//XRooms.getCount();
+	while (isXAvailable()) {
+		p = nullptr;
+		xDevices = nullptr;
+		XWaitList.dequeue(p);
+		if (!p)
+			return;
+		//XRooms.dequeue(xDevices);
+		XRooms.peek(xDevices);
+		//if (!xDevices)
+			//return;
+		p->peekCurrentTreatment()->setAssignedResource(xDevices);
+		p->peekCurrentTreatment()->setAssignmentTime(timestep);
+		xDevices->addpatient();
+		//isUAvailable() == false;
+		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
+		InTreatmentList.enqueue(p, - finishTime);
+		p->setStatus(Patient::SERV);
+		if (xDevices->isFull())
+		{
+			xDevices->setAvailability(false);
+			XRooms.dequeue(xDevices);
+		}
 
+	}
 }
-
 
 
 void Scheduler::CheckEarlyandLateLists()
@@ -415,8 +530,6 @@ void Scheduler::RPhandling(Patient* p)
 
 	while (temp.dequeue(t)) p->enqueueTreatment(t);
 }
-
-
 
 //delete
 Patient* Scheduler::RandomWaitingDequeue()

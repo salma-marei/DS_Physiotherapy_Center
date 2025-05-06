@@ -34,9 +34,9 @@ private:
 public:
 	Scheduler();
 	void loadPatients(); //only function we need to implement for phase 1.2
+	void generateOutPutFile();
 	void simulate();
 	void RandomWaitingEnqueue(Patient* p);
-	Patient* RandomWaitingDequeue();
 	void AddToWait_U(Patient* p);
 	void AddToWait_E(Patient* p);
 	void AddToWait_X(Patient* p);
@@ -50,11 +50,11 @@ public:
 	void CheckTreatmentList();
 	void RPhandling(Patient* p);
 	void FromE_LToW();
+	//int calctotalwait();
 	void moveFromInTreatment();
-	void assign_E(int timestep, resources* eDevices);
-	void assign_U(int timestep, resources* uDevices, Patient* p);
-	void assign_X(int timestep, resources* xDevices, Patient* p);
-
-
+	void assign_E();
+	void assign_U();
+	void assign_X();
+	Patient* RandomWaitingDequeue();
 	friend class UI;
 };
