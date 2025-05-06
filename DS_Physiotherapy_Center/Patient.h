@@ -7,6 +7,15 @@ using namespace std;
 class Treatment;
 
 class Patient {
+public:
+    enum Status {
+        IDLE,   // Patient hasn't arrived yet
+        ERLY,   // Patient arrived before PT
+        LATE,   // Patient arrived after PT
+        WAIT,   // Waiting for treatment
+        SERV,   // In treatment session
+        FNSH    // Finished all treatments
+    };
 
 private:
     static int nextID;
@@ -14,7 +23,7 @@ private:
     const char type;
     int appointmentTime;
     const int arrivalTime;
-    int status;
+    Status status;
     int finishTime;
     //resources* currentResource;
     LinkedQueue<Treatment*> treatmentList;
@@ -23,7 +32,7 @@ public:
 
     Patient(char t, int pt, int vt) :
         id(++nextID),type(t), appointmentTime(pt), arrivalTime(vt),
-        status(0), finishTime(-1) 
+        status(IDLE), finishTime(-1) 
     {
         //currentResource = nullptr;
     }
@@ -35,7 +44,7 @@ public:
     int getPT() { return appointmentTime; }
     int getVT() { return arrivalTime; }
     int getStatus() { return status; }
-    void setStatus(int s) { status = s; }
+    void setStatus(Status s) { status = s; }
     int getFT() { return finishTime; }
     void setFT(int ft) { finishTime = ft; }
 
@@ -53,7 +62,7 @@ public:
         treatmentList.peek(t);
         return t;
     }
-    // ha implement hena al required treatment list 
+     
     Treatment* dequeueTreatment()
     {
         Treatment* t=nullptr;

@@ -44,6 +44,9 @@ public:
 	bool isUAvailable();
 	bool isXAvailable();
 	void checkAllList();
+	void FromAllToLists();
+	void FromE_LToW();
+
 
 	friend class UI;
 };

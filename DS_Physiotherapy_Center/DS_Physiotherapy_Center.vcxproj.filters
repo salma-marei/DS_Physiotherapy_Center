@@ -4,7 +4,6 @@
     <ClCompile Include="EarlyPList.cpp" />
     <ClCompile Include="maincpp.cpp" />
     <ClCompile Include="EU_WaitList.cpp" />
-    <ClCompile Include="E_therapy.cpp" />
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="Scheduler.cpp" />
     <ClCompile Include="Treatment.cpp" />
@@ -13,6 +12,9 @@
     <ClCompile Include="X_WaitList.cpp" />
     <ClCompile Include="UI.cpp" />
     <ClCompile Include="Patient.cpp" />
+    <ClCompile Include="E_therapy.cpp">
+      <Filter>New DS</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayStack.h">

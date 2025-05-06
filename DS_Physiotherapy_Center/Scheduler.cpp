@@ -6,6 +6,7 @@
 #include "U_therapy.h"
 #include "X_therapy.h"
 
+
 Scheduler::Scheduler()
 {
 	timestep = numPatients = numE = numX = numU = 0;
@@ -226,15 +227,55 @@ void Scheduler::checkAllList()
 	}
 }
 
-Patient* Scheduler::RandomWaitingDequeue()
+void Scheduler::FromAllToLists()
 {
 	Patient* p = nullptr;
-	int random = rand() % 100;
-	if (random < 33)
-		EWaitList.dequeue(p);
-	else if(random < 66)
-		UWaitList.dequeue(p);
-	else
-		XWaitList.dequeue(p);
-	return p;
+	AllList.peek(p);
+	while (p && p->getVT() <= timestep) // while (p->getStatus()!=IDLE)
+	{
+		AllList.dequeue(p);
+		if (p->getPT() < p->getVT())
+		{
+			int penalty = (p->getPT() + p->getVT()) / 2;
+			LateList.enqueue(p, -(p->getVT() + penalty));
+			p->setStatus(Patient::LATE);
+		}
+		else if (p->getPT() > p->getVT()) {
+			EarlyList.enqueue(p, -p->getPT());
+			p->setStatus(Patient::ERLY);
+		}
+		else {
+			if (p->getType() == 'N') 
+				p->peekCurrentTreatment()->MoveToWait(this);
+
+		//	else if (p->getType() == 'R') {
+				//call fucntion R patient
+				//p
+			//}
+			p->setStatus(Patient::WAIT);
+		}
+		p = nullptr;
+		AllList.peek(p);
+	}
+
 }
+
+
+//delete
+//Patient* Scheduler::RandomWaitingDequeue()
+//{
+//	Patient* p = nullptr;
+//	int random = rand() % 100;
+//	if (random < 33)
+//		EWaitList.dequeue(p);
+//	else if(random < 66)
+//		UWaitList.dequeue(p);
+//	else
+//		XWaitList.dequeue(p);
+//	return p;
+//}
+
+//MoveServing()
+//peak inTreatment
+//check if patient finished current treatment
+//
