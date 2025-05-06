@@ -1,6 +1,6 @@
 #pragma once
 #include"Treatment.h"
-#include"Scheduler.h"
+class Scheduler;
 class U_therapy : public Treatment
 {
 public:

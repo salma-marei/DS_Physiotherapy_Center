@@ -46,7 +46,9 @@ public:
 	void checkAllList();
 	void FromAllToLists();
 	void FromE_LToW();
-
+	void assign_E(int timestep,resources* EDevices, Patient* p);
+	void assign_U(int timestep,resources* UDevices, Patient* p);
+	void assign_X(int timestep, resources* UDevices, Patient* p);
 
 	friend class UI;
 };
