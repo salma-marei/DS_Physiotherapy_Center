@@ -12,6 +12,8 @@ Scheduler::Scheduler()
 	timestep = numPatients = numE = numX = numU = 0;
 	pUI = nullptr;
 	pResc = 10;
+	pUI = new UI(this);
+	
 }
 
 void Scheduler::loadPatients()
@@ -20,6 +22,7 @@ void Scheduler::loadPatients()
 	if (!file.is_open())
 	{
 		cout << "error loading file";
+		exit(1);
 		return;
 	}												// reading number of resources
 		file >> numE >> numU >> numX;
@@ -78,71 +81,71 @@ void Scheduler::loadPatients()
 
 void Scheduler::simulate()
 {
-	pUI = new UI(this);
-	loadPatients();
-	while (FinishedPatients.getCount()<numPatients)
-	{
-		checkAllList();
-		int x = rand() % 100;
-		if (x < 10)
-		{
-			Patient* p = nullptr;
-			int t;
-			EarlyList.dequeue(p,t);
-			if(p)
-				RandomWaitingEnqueue(p);
-		}
-		else if(x<20)
-		{ 
-			Patient* p = nullptr;
-			int t;
-			LateList.dequeue(p, t);
-			if (p)
-				RandomWaitingEnqueue(p);
-		}
-		else if (x < 40)
-		{
-			Patient* p = RandomWaitingDequeue();
-			int t=1;//???
-			if (p)
-				InTreatmentList.enqueue(p, t);
+	FromAllToLists();
+	
+	//while (FinishedPatients.getCount()<numPatients)
+	//{
+	//	checkAllList();
+	//	int x = rand() % 100;
+	//	if (x < 10)
+	//	{
+	//		Patient* p = nullptr;
+	//		int t;
+	//		EarlyList.dequeue(p,t);
+	//		if(p)
+	//			RandomWaitingEnqueue(p);
+	//	}
+	//	else if(x<20)
+	//	{ 
+	//		Patient* p = nullptr;
+	//		int t;
+	//		LateList.dequeue(p, t);
+	//		if (p)
+	//			RandomWaitingEnqueue(p);
+	//	}
+	//	else if (x < 40)
+	//	{
+	//		Patient* p = RandomWaitingDequeue();
+	//		int t=1;//???
+	//		if (p)
+	//			InTreatmentList.enqueue(p, t);
 
-			p = RandomWaitingDequeue();
-			t = 1;///???
-			if (p)
-				InTreatmentList.enqueue(p, t);
-		}
-		else if (x < 50)
-		{
-			Patient* p = nullptr;
-			int t;
-			InTreatmentList.dequeue(p,t);
-			if (p)
-				RandomWaitingEnqueue(p);
-		}
-		else if (x < 60)
-		{
-			Patient* p = nullptr;
-			int t;
-			InTreatmentList.dequeue(p, t);
-			if (p)
-				FinishedPatients.push(p);
-		}
-		else if (x < 70)
-		{
-			Patient* p = nullptr;
-			p = XWaitList.cancel();
-			if (p)
-				FinishedPatients.push(p);
-		}
-		else if (x < 80)
-		{
-			EarlyList.reschedule(pResc); // returns true if rescheduling happened false otherwise
-		}
-		if (pUI->isInteractive())
+	//		p = RandomWaitingDequeue();
+	//		t = 1;///???
+	//		if (p)
+	//			InTreatmentList.enqueue(p, t);
+	//	}
+	//	else if (x < 50)
+	//	{
+	//		Patient* p = nullptr;
+	//		int t;
+	//		InTreatmentList.dequeue(p,t);
+	//		if (p)
+	//			RandomWaitingEnqueue(p);
+	//	}
+	//	else if (x < 60)
+	//	{
+	//		Patient* p = nullptr;
+	//		int t;
+	//		InTreatmentList.dequeue(p, t);
+	//		if (p)
+	//			FinishedPatients.push(p);
+	//	}
+	//	else if (x < 70)
+	//	{
+	//		Patient* p = nullptr;
+	//		p = XWaitList.cancel();
+	//		if (p)
+	//			FinishedPatients.push(p);
+	//	}
+	//	else if (x < 80)
+	//	{
+	//		EarlyList.reschedule(pResc); // returns true if rescheduling happened false otherwise
+	//	}
+		
 			pUI->printInterface();
 		timestep++;
-	}
+	//}
 }
 
 void Scheduler::RandomWaitingEnqueue(Patient* p)
@@ -247,11 +250,9 @@ void Scheduler::FromAllToLists()
 		else {
 			if (p->getType() == 'N') 
 				p->peekCurrentTreatment()->MoveToWait(this);
-
-		//	else if (p->getType() == 'R') {
-				//call fucntion R patient
-				//p
-			//}
+			else if (p->getType() == 'R') {
+				RPhandling(p);
+			}
 			p->setStatus(Patient::WAIT);
 		}
 		p = nullptr;
@@ -341,6 +342,76 @@ void Scheduler::assign_U(int timestep, resources* uDevices, Patient* p)
 void Scheduler::assign_X(int timestep, resources* UDevices, Patient* p)
 {
 
+}
+
+
+
+void Scheduler::CheckEarlyandLateLists()
+{
+	Patient* p = nullptr;
+	int time;
+	EarlyList.peek(p,time);
+	time = -time;
+	while (p && p->getPT() <= timestep)
+	{
+		EarlyList.dequeue(p, time);
+		Treatment* treatment = p->peekCurrentTreatment();
+		treatment->MoveToWait(this);
+		p = nullptr;
+		EarlyList.peek(p, time);
+		time = -time;
+	}
+	LateList.peek(p, time);
+	time = -time;
+	while (p && p->getPT() <= timestep)
+	{
+		EarlyList.dequeue(p, time);
+		Treatment* treatment = p->peekCurrentTreatment();
+		treatment->MoveToWait(this);
+		p = nullptr;
+		EarlyList.peek(p, time);
+		time = -time;
+	}
+}
+
+void Scheduler::RPhandling(Patient* p)
+{
+	bool X = false, U = false, E = false;
+	int TLU = 0, TLE = 0, TLX = 0;
+	LinkedQueue<Treatment*> temp;
+	Treatment* t = nullptr;
+
+	while (p->dequeueTreatment(t)) {
+		temp.enqueue(t);
+
+		resources* r;
+		r = t->getAssignedResource();
+		ResourceType type = ResourceType::Electro;
+		if (type == ResourceType::Electro) TLE = EWaitList.calcTreatmentLatency(t);
+		else if (type == ResourceType::Ultrasound) TLU = UWaitList.calcTreatmentLatency(t);
+		else TLX = XWaitList.XTreatmentLatency();
+	}
+
+	int minimum;
+
+	if (TLU <= TLE && TLU <= TLX) {
+		minimum = TLU;
+		U = true;
+	}
+	else if (TLE <= TLU && TLE <= TLX) {
+		minimum = TLE;
+		E = true;
+	}
+	else {
+		minimum = TLX;
+		X = true;
+	}
+
+	if (X) XWaitList.enqueue(p);
+	else if (E) EWaitList.enqueue(p);
+	else UWaitList.enqueue(p);
+
+	while (temp.dequeue(t)) p->enqueueTreatment(t);
 }
 
 

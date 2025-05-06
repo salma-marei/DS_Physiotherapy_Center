@@ -48,8 +48,8 @@ public:
     int getFT() { return finishTime; }
     void setFT(int ft) { finishTime = ft; }
 
-	void enqueueTreatment(Treatment* t) { // lma a3mel enqueue l treatment 
-		treatmentList.enqueue(t);
+	bool enqueueTreatment(Treatment* t) { // lma a3mel enqueue l treatment 
+		return treatmentList.enqueue(t);
 	}
     //void setCurrentTreatment(resources* r)
     //{
@@ -63,11 +63,10 @@ public:
         return t;
     }
      
-    Treatment* dequeueTreatment()
+    bool dequeueTreatment(Treatment* t)
     {
-        Treatment* t=nullptr;
-        treatmentList.dequeue(t);
-        return t;
+        t=nullptr;
+        return treatmentList.dequeue(t);
     }
     void setPT(int pt) { appointmentTime = pt; }
     

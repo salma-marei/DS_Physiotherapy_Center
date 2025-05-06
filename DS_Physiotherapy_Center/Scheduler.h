@@ -45,11 +45,16 @@ public:
 	bool isXAvailable();
 	void checkAllList();
 	void FromAllToLists();
+	void CheckWaitLists();
+	void CheckEarlyandLateLists();
+	void CheckTreatmentList();
+	void RPhandling(Patient* p);
 	void FromE_LToW();
 	void moveFromInTreatment();
 	void assign_E(int timestep, resources* eDevices, Patient* p);
 	void assign_U(int timestep, resources* uDevices, Patient* p);
 	void assign_X(int timestep, resources* xDevices, Patient* p);
+
 
 	friend class UI;
 };
