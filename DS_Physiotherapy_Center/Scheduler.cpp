@@ -262,7 +262,7 @@ void Scheduler::FromAllToLists()
 		AllList.dequeue(p);
 		if (p->getPT() < p->getVT())
 		{
-			int penalty = (p->getPT() + p->getVT()) / 2;
+			int penalty = (p->getVT() - p->getPT()) / 2;
 			LateList.enqueue(p, -(p->getVT() + penalty));
 			p->setStatus(Patient::LATE);
 		}
@@ -443,7 +443,7 @@ void Scheduler::CheckEarlyandLateLists()
 	}
 	LateList.peek(p, time);
 	time = -time;
-	while (p && p->getPT() <= timestep)
+	while (p && time <= timestep)
 	{
 		LateList.dequeue(p, time);
 		Treatment* treatment = p->peekCurrentTreatment();
