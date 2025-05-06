@@ -300,7 +300,7 @@ void Scheduler::moveFromInTreatment()
 		else {
 			if (p->getType() == 'N') t->MoveToWait(this);
 
-			//else  RPhandling(p);
+			else  RPhandling(p);
 			p->setStatus(Patient::WAIT);
 		}
 		p = nullptr;
