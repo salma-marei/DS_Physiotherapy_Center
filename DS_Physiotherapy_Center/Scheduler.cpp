@@ -285,18 +285,18 @@ void Scheduler::moveFromInTreatment()
 
 
 //delete
-//Patient* Scheduler::RandomWaitingDequeue()
-//{
-//	Patient* p = nullptr;
-//	int random = rand() % 100;
-//	if (random < 33)
-//		EWaitList.dequeue(p);
-//	else if(random < 66)
-//		UWaitList.dequeue(p);
-//	else
-//		XWaitList.dequeue(p);
-//	return p;
-//}
+Patient* Scheduler::RandomWaitingDequeue()
+{
+	Patient* p = nullptr;
+	int random = rand() % 100;
+	if (random < 33)
+		EWaitList.dequeue(p);
+	else if(random < 66)
+		UWaitList.dequeue(p);
+	else
+		XWaitList.dequeue(p);
+	return p;
+}
 
 //MoveServing()
 //peak inTreatment
