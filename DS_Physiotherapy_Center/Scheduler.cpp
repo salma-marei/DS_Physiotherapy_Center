@@ -310,12 +310,14 @@ void Scheduler::moveFromInTreatment()
 	}
 
 }
-void Scheduler::assign_E(int timestep, resources* eDevices, Patient* p)
+void Scheduler::assign_E(int timestep, resources* eDevices)
 {
-
+	Patient* p;
 	while (isEAvailable()) {
 		EWaitList.dequeue(p);
+		if (!p) return;
 		EDevices.dequeue(eDevices);
+		if (!eDevices) return;
 		p->peekCurrentTreatment()->setAssignedResource(eDevices);
 		p->peekCurrentTreatment()->setAssignmentTime(timestep);
 		//isEAvailable() == false;
