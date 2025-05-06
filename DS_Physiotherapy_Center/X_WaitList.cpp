@@ -29,3 +29,14 @@ Patient* X_WaitList::cancel()
 		backPtr = current;
 	return p;
 }
+
+int X_WaitList::XTreatmentLatency()
+{
+	Node<Patient*>* current = frontPtr;
+	int time = 0;
+	while (current) {
+		time += current->getItem()->peekCurrentTreatment()->getDuration();
+		current = current->getNext();
+	}
+	return time;
+}
