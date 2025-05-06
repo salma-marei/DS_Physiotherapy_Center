@@ -108,7 +108,7 @@ void UI::printAllList()
 	{
 		Patient* p;
 		temp.dequeue(p);
-		scheduler->AllList.enqueue(p);
+		scheduler->AllList.enqueue(p); 
 	}
 	cout << endl;
 }
