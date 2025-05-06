@@ -7,6 +7,7 @@ void EU_WaitList::insertSorted(Patient* patient, int penalty)
 		newNode->setNext(frontPtr);
 		frontPtr = newNode;
 		if (!backPtr) backPtr = frontPtr;
+		counter++;
 		return;
 	}
 	Node<Patient*>* current = frontPtr;
@@ -24,6 +25,7 @@ void EU_WaitList::insertSorted(Patient* patient, int penalty)
 		newNode->setNext(current->getNext());
 		current->setNext(newNode);
 	}
+	counter++;
 }
 
 int EU_WaitList::calcTreatmentLatency(Treatment* t)

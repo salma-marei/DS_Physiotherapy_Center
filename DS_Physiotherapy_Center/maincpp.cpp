@@ -3,11 +3,7 @@ using namespace std;
 int  main() {
 	Scheduler* S = new Scheduler();
 	S->loadPatients();
-	while (true)
-	{
-		S->simulate();
-	}
+	S->simulate();
 	S->generateOutPutFile();
-
 	delete S;
 }

@@ -13,6 +13,8 @@ Scheduler::Scheduler()
 	pUI = nullptr;
 	pResc = 10;
 	pUI = new UI(this);
+	NTT = 0;
+	RTT = 0;
 	
 }
 
@@ -94,13 +96,12 @@ void Scheduler::generateOutPutFile()
 	int totalWT = 0, totalTT = 0, latePenaltySum = 0;
 	int earlyCount = 0, lateCount = 0, cancelCount = 0, rescCount = 0;
 	int totalNWT = 0, totalRWT = 0;
-	int totalNTT = 0, totalRTT = 0;
 	ArrayStack <Patient*> tempstack;
 	while (!FinishedPatients.isEmpty()) {
 		FinishedPatients.pop(p);
 	
 		outfile << p->getID() << "\t" << p->getType() << "\t" << p->getPT() << "\t" << p->getVT() << "\t" << p->getFT() << "\t"
-	 << p->getWT() << "\t" << p->calcTT() << "\t" << (p->getcancelled() ? "T" : "F") << "\t" << (p->getrescheduled() ? "T" : "F");
+			<< p->getWT() << "\t" << p->calcTT() << "\t" << (p->getcancelled() ? "T" : "F") << "\t" << (p->getrescheduled() ? "T" : "F") << endl;;
 
 		totalPatients++;
 		totalWT += p->getWT();
@@ -108,12 +109,10 @@ void Scheduler::generateOutPutFile()
 		if (p->getType() == 'N') {
 			numNPatients++;
 			totalNWT += p->getWT();
-			totalNTT += p->peekCurrentTreatment()->getDuration();
 		}
 		if (p->getType() == 'R') {
 			numRPatients++;
 			totalRWT += p->getWT();
-			totalNTT += p->peekCurrentTreatment()->getDuration();
 		}
 		if (p->getVT() < p->getPT()) earlyCount++;
 		if (p->getVT() > p->getPT())
@@ -132,22 +131,29 @@ void Scheduler::generateOutPutFile()
 		FinishedPatients.push(p);
 	}
 	outfile << "total number of timesteps = " << timestep << endl;
-	outfile << "total number of all, N, R patients = " << totalPatients << "/t " << numNPatients << "/t " << numRPatients << endl;
-	outfile << "Average total waiting time for all, N, and R patients = " << (totalWT / totalPatients) << "/t " << (totalNWT / numNPatients) 
-    << "/t " << (totalRWT / numRPatients) << endl;
-	outfile << "Average total treatment time for all, N, and R patients = " << (totalTT / totalPatients) << "/t " << (totalNTT / numNPatients)
-	<< "/t " << (totalRTT / numRPatients) << endl;
-	outfile << "Percentage of patients of an accepted cancellation (%) = " << ((float)cancelCount / totalPatients) * 100 << endl;
-	outfile << "Percentage of patients of an accepted reschedule (%) = " << ((float)rescCount / totalPatients) * 100 << endl;
-	outfile << "Percentage of early patients (%) = " << ((float)earlyCount / totalPatients) * 100 << endl;
-	outfile << "Percentage of late patients (%) = " << ((float)lateCount / totalPatients) * 100 << endl;
-	outfile << "Average late penalty = " << (latePenaltySum / lateCount) << "timestep(s)" << endl;
+	outfile << "total number of all, N, R patients = " << totalPatients << "\t " << numNPatients << "\t " << numRPatients << endl;
+	if (numNPatients != 0 && numRPatients != 0)
+	{
+		outfile << "Average total waiting time for all, N, and R patients = " << (totalWT / totalPatients) << "\t " << (totalNWT / numNPatients)
+			<< "\t " << (totalRWT / numRPatients) << endl;
+		outfile << "Average total treatment time for all, N, and R patients = " << (totalTT / totalPatients) << "\t " << (NTT / numNPatients)
+			<< "\t " << (RTT / numRPatients) << endl;
+	}
+	if (totalPatients != 0)
+	{
+		outfile << "Percentage of patients of an accepted cancellation (%) = " << ((float)cancelCount / totalPatients) * 100 << endl;
+		outfile << "Percentage of patients of an accepted reschedule (%) = " << ((float)rescCount / totalPatients) * 100 << endl;
+		outfile << "Percentage of early patients (%) = " << ((float)earlyCount / totalPatients) * 100 << endl;
+		outfile << "Percentage of late patients (%) = " << ((float)lateCount / totalPatients) * 100 << endl;
+		if(lateCount!=0)
+			outfile << "Average late penalty = " << (latePenaltySum / lateCount) << "timestep(s)" << endl;
+	}
 
 }
 
 void Scheduler::simulate()
 {
-	loadPatients();
+	//loadPatients();
 	while (FinishedPatients.getCount() < numPatients) {
 		FromAllToLists();
 		CheckEarlyandLateLists();
@@ -160,66 +166,6 @@ void Scheduler::simulate()
 		pUI->printInterface();
 		timestep++;
 	}
-
-	//{
-	//	checkAllList();
-	//	int x = rand() % 100;
-	//	if (x < 10)
-	//	{
-	//		Patient* p = nullptr;
-	//		int t;
-	//		EarlyList.dequeue(p,t);
-	//		if(p)
-	//			RandomWaitingEnqueue(p);
-	//	}
-	//	else if(x<20)
-	//	{ 
-	//		Patient* p = nullptr;
-	//		int t;
-	//		LateList.dequeue(p, t);
-	//		if (p)
-	//			RandomWaitingEnqueue(p);
-	//	}
-	//	else if (x < 40)
-	//	{
-	//		Patient* p = RandomWaitingDequeue();
-	//		int t=1;//???
-	//		if (p)
-	//			InTreatmentList.enqueue(p, t);
-
-	//		p = RandomWaitingDequeue();
-	//		t = 1;///???
-	//		if (p)
-	//			InTreatmentList.enqueue(p, t);
-	//	}
-	//	else if (x < 50)
-	//	{
-	//		Patient* p = nullptr;
-	//		int t;
-	//		InTreatmentList.dequeue(p,t);
-	//		if (p)
-	//			RandomWaitingEnqueue(p);
-	//	}
-	//	else if (x < 60)
-	//	{
-	//		Patient* p = nullptr;
-	//		int t;
-	//		InTreatmentList.dequeue(p, t);
-	//		if (p)
-	//			FinishedPatients.push(p);
-	//	}
-	//	else if (x < 70)
-	//	{
-	//		Patient* p = nullptr;
-	//		p = XWaitList.cancel();
-	//		if (p)
-	//			FinishedPatients.push(p);
-	//	}
-	//	else if (x < 80)
-	//	{
-	//		EarlyList.reschedule(pResc); // returns true if rescheduling happened false otherwise
-	//	}
-	//}
 }
 
 void Scheduler::RandomWaitingEnqueue(Patient* p)
@@ -345,6 +291,7 @@ void Scheduler::moveFromInTreatment()
 	InTreatmentList.peek(p,priority);
 	priority = -priority;
 	while (p && priority <= timestep) {
+
 		InTreatmentList.dequeue(p, priority);
 
 		Treatment* t = nullptr;
@@ -366,6 +313,12 @@ void Scheduler::moveFromInTreatment()
 			}
 			r->removepatient();
 			break;
+		}
+		if (p->getType() == 'N') {
+			NTT += t->getDuration();
+		}
+		if (p->getType() == 'R') {
+			RTT += t->getDuration();
 		}
 		delete t;
 		t = nullptr;
@@ -394,6 +347,7 @@ void Scheduler::assign_E()
 	while (!EWaitList.isEmpty() && isEAvailable()) {
 		p = nullptr;
 		eDevices = nullptr;
+
 		EWaitList.dequeue(p);
 		if (!p)
 			return;
@@ -491,11 +445,11 @@ void Scheduler::CheckEarlyandLateLists()
 	time = -time;
 	while (p && p->getPT() <= timestep)
 	{
-		EarlyList.dequeue(p, time);
+		LateList.dequeue(p, time);
 		Treatment* treatment = p->peekCurrentTreatment();
 		treatment->MoveToWait(this);
 		p = nullptr;
-		EarlyList.peek(p, time);
+		LateList.peek(p, time);
 		time = -time;
 	}
 }
