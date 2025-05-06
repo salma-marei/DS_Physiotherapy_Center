@@ -265,9 +265,32 @@ void Scheduler::moveFromInTreatment()
 	Patient* p = nullptr;
 	int priority;
 	InTreatmentList.peek(p,priority);
-	while (p && -priority == timestep) {
+	priority = -priority;
+	while (p && priority <= timestep) {
 		InTreatmentList.dequeue(p, priority);
+
 		Treatment* t = nullptr;
+		t = p->dequeueTreatment();
+		resources* r= t->getAssignedResource();
+		t->setAssignedResource(nullptr);
+		switch (r->getType())
+		{
+		case Electro:
+			EDevices.enqueue(r);
+			break;
+		case Ultrasound:
+			UDevices.enqueue(r);
+			break;
+		case GymRoom:
+			if (r->isFull())
+			{
+				XRooms.enqueue(r);
+			}
+			r->removepatient();
+			break;
+		}
+		delete t;
+		t = nullptr;
 		t = p->peekCurrentTreatment();
 		if (!t) {
 			FinishedPatients.push(p);
@@ -279,6 +302,10 @@ void Scheduler::moveFromInTreatment()
 			//else  RPhandling(p);
 			p->setStatus(Patient::WAIT);
 		}
+		p = nullptr;
+		InTreatmentList.peek(p, priority);
+		priority = -priority;
+
 	}
 
 }
