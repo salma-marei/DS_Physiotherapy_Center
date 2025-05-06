@@ -55,6 +55,7 @@ bool resources::isFull() {
 			return true;
 		}
 	}
+	return false;
 }
 void resources::addpatient() {
 	if (type == GymRoom && !isFull()) {
