@@ -261,6 +261,90 @@ void Scheduler::FromAllToLists()
 
 }
 
+void Scheduler::moveFromInTreatment()
+{
+	Patient* p = nullptr;
+	int priority;
+	InTreatmentList.peek(p,priority);
+	priority = -priority;
+	while (p && priority <= timestep) {
+		InTreatmentList.dequeue(p, priority);
+
+		Treatment* t = nullptr;
+		t = p->dequeueTreatment();
+		resources* r= t->getAssignedResource();
+		t->setAssignedResource(nullptr);
+		switch (r->getType())
+		{
+		case Electro:
+			EDevices.enqueue(r);
+			break;
+		case Ultrasound:
+			UDevices.enqueue(r);
+			break;
+		case GymRoom:
+			if (r->isFull())
+			{
+				XRooms.enqueue(r);
+			}
+			r->removepatient();
+			break;
+		}
+		delete t;
+		t = nullptr;
+		t = p->peekCurrentTreatment();
+		if (!t) {
+			FinishedPatients.push(p);
+			p->setStatus(Patient::FNSH);
+		}
+		else {
+			if (p->getType() == 'N') t->MoveToWait(this);
+
+			//else  RPhandling(p);
+			p->setStatus(Patient::WAIT);
+		}
+		p = nullptr;
+		InTreatmentList.peek(p, priority);
+		priority = -priority;
+
+	}
+
+}
+void Scheduler::assign_E(int timestep, resources* eDevices, Patient* p)
+{
+
+	while (isEAvailable()) {
+		EWaitList.dequeue(p);
+		EDevices.dequeue(eDevices);
+		p->peekCurrentTreatment()->setAssignedResource(eDevices);
+		p->peekCurrentTreatment()->setAssignmentTime(timestep);
+		//isEAvailable() == false;
+		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
+		InTreatmentList.enqueue(p, finishTime);
+		p->setStatus(Patient::SERV);
+	}
+}
+
+void Scheduler::assign_U(int timestep, resources* uDevices, Patient* p)
+{
+	while (isUAvailable()) {
+		UWaitList.dequeue(p);
+		UDevices.dequeue(uDevices);
+		p->peekCurrentTreatment()->setAssignedResource(uDevices);
+		p->peekCurrentTreatment()->setAssignmentTime(timestep);
+		//isUAvailable() == false;
+		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
+		InTreatmentList.enqueue(p, finishTime);
+		p->setStatus(Patient::SERV);
+	}
+}
+
+void Scheduler::assign_X(int timestep, resources* UDevices, Patient* p)
+{
+
+}
+
+
 
 void Scheduler::CheckEarlyandLateLists()
 {
