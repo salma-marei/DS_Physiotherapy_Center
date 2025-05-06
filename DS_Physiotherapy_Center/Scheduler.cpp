@@ -260,20 +260,43 @@ void Scheduler::FromAllToLists()
 
 }
 
+void Scheduler::moveFromInTreatment()
+{
+	Patient* p = nullptr;
+	int priority;
+	InTreatmentList.peek(p,priority);
+	while (p && -priority == timestep) {
+		InTreatmentList.dequeue(p, priority);
+		Treatment* t = nullptr;
+		t = p->peekCurrentTreatment();
+		if (!t) {
+			FinishedPatients.push(p);
+			p->setStatus(Patient::FNSH);
+		}
+		else {
+			if (p->getType() == 'N') t->MoveToWait(this);
+
+			//else  RPhandling(p);
+			p->setStatus(Patient::WAIT);
+		}
+	}
+
+}
+
 
 //delete
-//Patient* Scheduler::RandomWaitingDequeue()
-//{
-//	Patient* p = nullptr;
-//	int random = rand() % 100;
-//	if (random < 33)
-//		EWaitList.dequeue(p);
-//	else if(random < 66)
-//		UWaitList.dequeue(p);
-//	else
-//		XWaitList.dequeue(p);
-//	return p;
-//}
+Patient* Scheduler::RandomWaitingDequeue()
+{
+	Patient* p = nullptr;
+	int random = rand() % 100;
+	if (random < 33)
+		EWaitList.dequeue(p);
+	else if(random < 66)
+		UWaitList.dequeue(p);
+	else
+		XWaitList.dequeue(p);
+	return p;
+}
 
 //MoveServing()
 //peak inTreatment

@@ -46,7 +46,7 @@ public:
 	void checkAllList();
 	void FromAllToLists();
 	void FromE_LToW();
-
+	void moveFromInTreatment();
 
 	friend class UI;
 };
