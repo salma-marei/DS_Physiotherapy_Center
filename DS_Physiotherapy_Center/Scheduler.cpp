@@ -108,12 +108,12 @@ void Scheduler::generateOutPutFile()
 		if (p->getType() == 'N') {
 			numNPatients++;
 			totalNWT += p->getWT();
-			//totalNTT += p->getTreatmentTime();
+			totalNTT += p->peekCurrentTreatment()->getDuration();
 		}
 		if (p->getType() == 'R') {
 			numRPatients++;
 			totalRWT += p->getWT();
-			//totalNTT += p->getTreatmentTime();
+			totalNTT += p->peekCurrentTreatment()->getDuration();
 		}
 		if (p->getVT() < p->getPT()) earlyCount++;
 		if (p->getVT() > p->getPT())
@@ -142,6 +142,7 @@ void Scheduler::generateOutPutFile()
 	outfile << "Percentage of early patients (%) = " << ((float)earlyCount / totalPatients) * 100 << endl;
 	outfile << "Percentage of late patients (%) = " << ((float)lateCount / totalPatients) * 100 << endl;
 	outfile << "Average late penalty = " << (latePenaltySum / lateCount) << "timestep(s)" << endl;
+
 }
 
 void Scheduler::simulate()
@@ -347,7 +348,7 @@ void Scheduler::moveFromInTreatment()
 		InTreatmentList.dequeue(p, priority);
 
 		Treatment* t = nullptr;
-		p->dequeueTreatment(t);
+		t= p->dequeueTreatment();
 		resources* r= t->getAssignedResource();
 		t->setAssignedResource(nullptr);
 		switch (r->getType())
@@ -390,7 +391,7 @@ void Scheduler::assign_E()
 {
 	Patient* p = nullptr;
 	resources* eDevices = nullptr;
-	while (isEAvailable()) {
+	while (!EWaitList.isEmpty() && isEAvailable()) {
 		p = nullptr;
 		eDevices = nullptr;
 		EWaitList.dequeue(p);
@@ -406,14 +407,17 @@ void Scheduler::assign_E()
 		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
 		InTreatmentList.enqueue(p, - finishTime);
 		p->setStatus(Patient::SERV);
+		p->setendWait(timestep - p->getStartWait());
+		p->setWT(p->getWT() + p->getendWait());
 	}
+
 }
 
 void Scheduler::assign_U()
 {
 	Patient* p=nullptr;
 	resources* uDevices = nullptr;
-	while (isUAvailable()) {
+	while (!UWaitList.isEmpty() && isUAvailable()) {
 		p = nullptr;
 		uDevices = nullptr;
 		UWaitList.dequeue(p);
@@ -429,18 +433,21 @@ void Scheduler::assign_U()
 		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
 		InTreatmentList.enqueue(p, - finishTime);
 		p->setStatus(Patient::SERV);
+		p->setendWait(timestep - p->getStartWait());
+		p->setWT(p->getWT() + p->getendWait());
 	}
+
 }
 
 void Scheduler::assign_X() {
 	Patient* p = nullptr;
 	resources* xDevices = nullptr;
 	//XRooms.getCount();
-	while (isXAvailable()) {
+	while (!XWaitList.isEmpty() && isXAvailable()) {
 		p = nullptr;
 		xDevices = nullptr;
 		XWaitList.dequeue(p);
-		if (!p)
+		if (p==nullptr)
 			return;
 		//XRooms.dequeue(xDevices);
 		XRooms.peek(xDevices);
@@ -458,8 +465,10 @@ void Scheduler::assign_X() {
 			xDevices->setAvailability(false);
 			XRooms.dequeue(xDevices);
 		}
-
+		p->setendWait(timestep - p->getStartWait());
+		p->setWT(p->getWT() + p->getendWait());
 	}
+
 }
 
 
@@ -496,17 +505,22 @@ void Scheduler::RPhandling(Patient* p)
 	bool X = false, U = false, E = false;
 	int TLU = 0, TLE = 0, TLX = 0;
 	LinkedQueue<Treatment*> temp;
+	LinkedQueue<Treatment*> temp2;
 	Treatment* t = nullptr;
 
-	while (p->dequeueTreatment(t)) {
+	while (t = p->dequeueTreatment()) {
 		temp.enqueue(t);
 
-		resources* r;
-		r = t->getAssignedResource();
-		ResourceType type = ResourceType::Electro;
-		if (type == ResourceType::Electro) TLE = EWaitList.calcTreatmentLatency(t);
-		else if (type == ResourceType::Ultrasound) TLU = UWaitList.calcTreatmentLatency(t);
-		else TLX = XWaitList.XTreatmentLatency();
+		//resources* r;
+		//r = t->getAssignedResource();
+		//ResourceType type = ResourceType::Electro;
+		if(dynamic_cast<E_therapy*>(t))
+			TLE = EWaitList.calcTreatmentLatency(t);
+		if (dynamic_cast<U_therapy*>(t))
+			TLU = UWaitList.calcTreatmentLatency(t);
+		if (dynamic_cast<X_therapy*>(t))
+			TLX = XWaitList.XTreatmentLatency();
+		t = nullptr;
 	}
 
 	int minimum;
@@ -523,12 +537,29 @@ void Scheduler::RPhandling(Patient* p)
 		minimum = TLX;
 		X = true;
 	}
+	while (temp.dequeue(t))
+	{
+		if (X && dynamic_cast<X_therapy*>(t))
+		{
+			p->enqueueTreatment(t);
+		}
+		else if (E && dynamic_cast<E_therapy*>(t))
+		{
+			p->enqueueTreatment(t);
+		}
+		else if (U && dynamic_cast<U_therapy*>(t))
+		{
+			p->enqueueTreatment(t);
+		}
+		else
+		{
+			temp2.enqueue(t);
+		}
+	}
+	t = nullptr;
+	while (temp2.dequeue(t)) p->enqueueTreatment(t);
 
-	if (X) XWaitList.enqueue(p);
-	else if (E) EWaitList.enqueue(p);
-	else UWaitList.enqueue(p);
-
-	while (temp.dequeue(t)) p->enqueueTreatment(t);
+	p->peekCurrentTreatment()->MoveToWait(this);
 }
 
 //delete

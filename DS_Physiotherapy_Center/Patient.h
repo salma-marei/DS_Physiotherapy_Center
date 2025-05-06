@@ -83,10 +83,11 @@ public:
         return t;
     }
      
-    bool dequeueTreatment(Treatment* t)
+    Treatment* dequeueTreatment()
     {
-        t=nullptr;
-        return treatmentList.dequeue(t);
+        Treatment* t=nullptr;
+        treatmentList.dequeue(t);
+        return t;
     }
     void setPT(int pt) { appointmentTime = pt; }
     
