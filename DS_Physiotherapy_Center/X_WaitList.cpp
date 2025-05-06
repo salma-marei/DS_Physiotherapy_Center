@@ -27,5 +27,6 @@ Patient* X_WaitList::cancel()
 	delete temp;
 	if (current->getNext() == nullptr)
 		backPtr = current;
+	p->setCancelled(true);
 	return p;
 }

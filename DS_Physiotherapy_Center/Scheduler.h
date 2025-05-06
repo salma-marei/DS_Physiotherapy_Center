@@ -34,6 +34,7 @@ private:
 public:
 	Scheduler();
 	void loadPatients(); //only function we need to implement for phase 1.2
+	void generateOutPutFile();
 	void simulate();
 	void RandomWaitingEnqueue(Patient* p);
 	Patient* RandomWaitingDequeue();
@@ -46,6 +47,7 @@ public:
 	void checkAllList();
 	void FromAllToLists();
 	void FromE_LToW();
+	//int calctotalwait();
 
 
 	friend class UI;
