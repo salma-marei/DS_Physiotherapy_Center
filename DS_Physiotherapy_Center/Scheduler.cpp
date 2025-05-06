@@ -282,40 +282,67 @@ void Scheduler::moveFromInTreatment()
 	}
 
 }
-void Scheduler::assign_E(int timestep, resources* eDevices, Patient* p)
+void Scheduler::assign_E()
 {
-
+	Patient* p = nullptr;
+	resources* eDevices = nullptr;
 	while (isEAvailable()) {
 		EWaitList.dequeue(p);
+		if (!p)
+			return;
 		EDevices.dequeue(eDevices);
+		if (!eDevices)
+			return;
+		eDevices->setAvailability(false);
 		p->peekCurrentTreatment()->setAssignedResource(eDevices);
 		p->peekCurrentTreatment()->setAssignmentTime(timestep);
 		//isEAvailable() == false;
 		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
-		InTreatmentList.enqueue(p, finishTime);
+		InTreatmentList.enqueue(p, - finishTime);
 		p->setStatus(Patient::SERV);
 	}
 }
 
-void Scheduler::assign_U(int timestep, resources* uDevices, Patient* p)
+void Scheduler::assign_U()
 {
+	Patient* p=nullptr;
+	resources* uDevices = nullptr;
 	while (isUAvailable()) {
 		UWaitList.dequeue(p);
+		if (!p)
+			return;
 		UDevices.dequeue(uDevices);
+		if (!uDevices)
+			return;
+		uDevices->setAvailability(false);
 		p->peekCurrentTreatment()->setAssignedResource(uDevices);
 		p->peekCurrentTreatment()->setAssignmentTime(timestep);
 		//isUAvailable() == false;
 		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
-		InTreatmentList.enqueue(p, finishTime);
+		InTreatmentList.enqueue(p, - finishTime);
 		p->setStatus(Patient::SERV);
 	}
 }
 
-void Scheduler::assign_X(int timestep, resources* UDevices, Patient* p)
-{
-
+void Scheduler::assign_X() {
+	Patient* p = nullptr;
+	resources* xDevices = nullptr;
+	while (isXAvailable()) {
+		XWaitList.dequeue(p);
+		if (!p)
+			return;
+		XRooms.dequeue(xDevices);
+		if (!xDevices)
+			return;
+		xDevices->setAvailability(false);
+		p->peekCurrentTreatment()->setAssignedResource(xDevices);
+		p->peekCurrentTreatment()->setAssignmentTime(timestep);
+		//isUAvailable() == false;
+		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
+		InTreatmentList.enqueue(p, - finishTime);
+		p->setStatus(Patient::SERV);
+	}
 }
-
 
 
 //delete
