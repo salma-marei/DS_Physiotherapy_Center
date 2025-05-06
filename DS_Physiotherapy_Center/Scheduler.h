@@ -44,6 +44,10 @@ public:
 	bool isXAvailable();
 	void checkAllList();
 	void FromAllToLists();
+	void CheckWaitLists();
+	void CheckEarlyandLateLists();
+	void CheckTreatmentList();
+	void RPhandling(Patient* p);
 	void FromE_LToW();
 	void moveFromInTreatment();
 	void assign_E();
