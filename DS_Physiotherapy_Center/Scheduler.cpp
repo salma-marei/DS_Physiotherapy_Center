@@ -260,54 +260,20 @@ void Scheduler::FromAllToLists()
 
 }
 
-void Scheduler::assign_E(int timestep,resources* eDevices, Patient* p)
-{
-    
-	while (isEAvailable()) {
-		EWaitList.dequeue(p);
-	    EDevices.dequeue(eDevices);
-		p->peekCurrentTreatment()->setAssignedResource(eDevices);
-		p->peekCurrentTreatment()->setAssignmentTime(timestep);
-		//isEAvailable() == false;
-		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
-		InTreatmentList.enqueue(p, finishTime);
-		p->setStatus(Patient::SERV);
-	}
-}
-
-void Scheduler::assign_U(int timestep,resources* uDevices, Patient* p)
-{
-	while ( isUAvailable()) {
-		UWaitList.dequeue(p);
-		UDevices.dequeue(uDevices);
-		p->peekCurrentTreatment()->setAssignedResource(uDevices);
-		p->peekCurrentTreatment()->setAssignmentTime(timestep);
-		//isUAvailable() == false;
-		int finishTime = timestep + p->peekCurrentTreatment()->getDuration();
-		InTreatmentList.enqueue(p, finishTime);
-		p->setStatus(Patient::SERV);
-	}
-}
-
-void Scheduler::assign_X(int timestep, resources* UDevices, Patient* p)
-{
-
-}
-
 
 //delete
-Patient* Scheduler::RandomWaitingDequeue()
-{
-	Patient* p = nullptr;
-	int random = rand() % 100;
-	if (random < 33)
-		EWaitList.dequeue(p);
-	else if(random < 66)
-		UWaitList.dequeue(p);
-	else
-		XWaitList.dequeue(p);
-	return p;
-}
+//Patient* Scheduler::RandomWaitingDequeue()
+//{
+//	Patient* p = nullptr;
+//	int random = rand() % 100;
+//	if (random < 33)
+//		EWaitList.dequeue(p);
+//	else if(random < 66)
+//		UWaitList.dequeue(p);
+//	else
+//		XWaitList.dequeue(p);
+//	return p;
+//}
 
 //MoveServing()
 //peak inTreatment
