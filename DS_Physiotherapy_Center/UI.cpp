@@ -1,4 +1,4 @@
-#include "UI.h"
+﻿#include "UI.h"
 #include "Scheduler.h"
 
 UI::UI(Scheduler* s)
@@ -16,6 +16,7 @@ UI::UI(Scheduler* s)
 	{
 	case 's':
 		interactive = false;
+		cout << "\nSilent Mode, Simulation ends, Output file created\n";
 		break;
 	case 'i':
 		interactive = true;

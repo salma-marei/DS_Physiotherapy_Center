@@ -43,6 +43,9 @@ int Patient::getTreatmentTime(Treatment* type)
 		t = nullptr;
 		treatmentList.dequeue(t);
 	}
+	t = nullptr;
+	while (temp.dequeue(t))
+		treatmentList.enqueue(t);
 	return time;
 }
 ostream& operator<<(ostream& out, Patient* P)

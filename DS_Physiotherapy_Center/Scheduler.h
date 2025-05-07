@@ -29,6 +29,7 @@ private:
 	int numPatients;
 	int numE, numU, numX;//Total number of devices
 	int pResc;
+	int pCancel;
 	int NTT;
 	int RTT;
 	UI* pUI;
