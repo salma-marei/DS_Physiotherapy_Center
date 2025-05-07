@@ -102,16 +102,18 @@ void Scheduler::generateOutPutFile()
 		FinishedPatients.pop(p);
 	
 		outfile << p->getID() << "\t\t\t" << p->getType() << "\t" << p->getPT() << "\t" << p->getVT() << "\t" << p->getFT() << "\t"
-			<< p->getWT() << "\t" << p->calcTT() << "\t\t" << (p->getcancelled() ? "T" : "F") << "\t\t" << (p->getrescheduled() ? "T" : "F") << endl;;
+	 << p->getWT() << "\t" << p->calcTT() << "\t\t" << (p->getcancelled() ? "T" : "F") << "\t\t" << (p->getrescheduled() ? "T" : "F") << endl;;
 
 		totalPatients++;
 		totalWT += p->getWT();
 		totalTT += p->calcTT();
-		if (p->getType() == 'N') {
+		if (p->getType() == 'N') 
+		{
 			numNPatients++;
 			totalNWT += p->getWT();
 		}
-		if (p->getType() == 'R') {
+		if (p->getType() == 'R') 
+		{
 			numRPatients++;
 			totalRWT += p->getWT();
 		}
@@ -122,8 +124,10 @@ void Scheduler::generateOutPutFile()
 			lateCount++;
 			latePenaltySum += (p->getVT() - p->getPT() + 1) / 2; 
 		}
-		if (p->getcancelled()) cancelCount++;
-		if (p->getrescheduled()) rescCount++;
+		if (p->getcancelled())
+			cancelCount++;
+		if (p->getrescheduled()) 
+			rescCount++;
 
 
 		tempstack.push(p);
@@ -155,6 +159,7 @@ void Scheduler::generateOutPutFile()
 
 void Scheduler::simulate()
 {
+	
 	//loadPatients();
 	while (FinishedPatients.getCount() < numPatients) {
 		FromAllToLists();
@@ -273,10 +278,12 @@ void Scheduler::FromAllToLists()
 			int penalty = (p->getVT() - p->getPT()) / 2;
 			LateList.enqueue(p, -(p->getVT() + penalty));
 			p->setStatus(Patient::LATE);
+			p->setStartWait(timestep);
 		}
 		else if (p->getPT() > p->getVT()) {
 			EarlyList.enqueue(p, -p->getPT());
 			p->setStatus(Patient::ERLY);
+			p->setStartWait(timestep);
 		}
 		else {
 			if (p->getType() == 'N') {
@@ -307,6 +314,7 @@ void Scheduler::moveFromInTreatment()
 
 		Treatment* t = nullptr;
 		t= p->dequeueTreatment();
+
 		if (!t) {
 			p = nullptr;
 			InTreatmentList.peek(p, priority);
@@ -342,6 +350,7 @@ void Scheduler::moveFromInTreatment()
 		t = p->peekCurrentTreatment();
 		if (!t) {
 			FinishedPatients.push(p);
+			p->setFT(timestep);
 			p->setStatus(Patient::FNSH);
 		}
 		else {
@@ -462,6 +471,8 @@ void Scheduler::CheckEarlyandLateLists()
 		Treatment* treatment = p->peekCurrentTreatment();
 		if (treatment != nullptr)
 		treatment->MoveToWait(this);
+		p->setendWait(timestep - p->getStartWait());
+		p->setWT(p->getWT() + p->getendWait());
 		p = nullptr;
 		EarlyList.peek(p, time);
 		time = -time;
@@ -476,6 +487,8 @@ void Scheduler::CheckEarlyandLateLists()
 		Treatment* treatment = p->peekCurrentTreatment();
 		if (treatment != nullptr)
 		treatment->MoveToWait(this);
+		p->setendWait(timestep - p->getStartWait());
+		p->setWT(p->getWT() + p->getendWait());
 		p = nullptr;
 		LateList.peek(p, time);
 		time = -time;
