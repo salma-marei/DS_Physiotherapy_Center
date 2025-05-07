@@ -11,7 +11,8 @@ Scheduler::Scheduler()
 {
 	timestep = numPatients = numE = numX = numU = 0;
 	pUI = nullptr;
-	pResc = 10;
+	pResc = 0;
+	pCancel = 0;
 	pUI = new UI(this);
 	NTT = 0;
 	RTT = 0;
@@ -45,9 +46,9 @@ void Scheduler::loadPatients()
 			resources* Xroom = new resources(i + 1, GymRoom, capacity[i]);		// allocating Xrooms
 			XRooms.enqueue(Xroom);
 		}
-		int Pcancel, Presc;
-		file >> Pcancel >> Presc;
-		
+
+		file >> pCancel >> pResc;
+
 		//int numPatients;
 		file >> numPatients;
 		
@@ -162,8 +163,14 @@ void Scheduler::simulate()
 		assign_U();
 		assign_X();
 		EarlyList.reschedule(pResc); //need to check
-		XWaitList.cancel(); //need to check 
-		pUI->printInterface();
+		Patient* p = XWaitList.cancel(pCancel); //need to check 
+		if (p)
+		{
+			p->setFT(timestep);//????
+			FinishedPatients.push(p);
+		}
+		if (pUI->isInteractive())
+			pUI->printInterface();
 		timestep++;
 	}
 }
@@ -271,12 +278,15 @@ void Scheduler::FromAllToLists()
 			p->setStatus(Patient::ERLY);
 		}
 		else {
-			if (p->getType() == 'N') 
+			if (p->getType() == 'N') {
+
 				p->peekCurrentTreatment()->MoveToWait(this);
+				p->setStatus(Patient::WAIT);
+			}
 			else if (p->getType() == 'R') {
 				RPhandling(p);
 			}
-			p->setStatus(Patient::WAIT);
+			
 		}
 		p = nullptr;
 		AllList.peek(p);
@@ -334,10 +344,13 @@ void Scheduler::moveFromInTreatment()
 			p->setStatus(Patient::FNSH);
 		}
 		else {
-			if (p->getType() == 'N') t->MoveToWait(this);
-
+			if (p->getType() == 'N')
+			{
+				t->MoveToWait(this);
+				p->setStatus(Patient::WAIT);
+			}
 			else  RPhandling(p);
-			p->setStatus(Patient::WAIT);
+
 		}
 		p = nullptr;
 		InTreatmentList.peek(p, priority);
@@ -471,7 +484,7 @@ void Scheduler::CheckEarlyandLateLists()
 void Scheduler::RPhandling(Patient* p)
 {
 	bool X = false, U = false, E = false;
-	int TLU = 0, TLE = 0, TLX = 0;
+	int TLU = INT_MAX , TLE = INT_MAX, TLX = INT_MAX;
 	LinkedQueue<Treatment*> temp;
 	LinkedQueue<Treatment*> temp2;
 	Treatment* t = nullptr;

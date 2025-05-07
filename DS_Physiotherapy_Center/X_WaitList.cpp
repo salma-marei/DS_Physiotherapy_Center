@@ -1,11 +1,11 @@
 #include "X_WaitList.h"
 #include <iostream>
-Patient* X_WaitList::cancel()
+Patient* X_WaitList::cancel(int Pcancel)
 {
-	if (!counter)
-		return nullptr;
+	int randNum = rand() % 101;
+	if (isEmpty() || randNum >= Pcancel) return nullptr;
 	Patient* p = nullptr;
-	int randNum = rand() % counter + 1;
+	randNum = rand() % counter + 1;
 	Node<Patient*>* current = frontPtr;
 	if (randNum == 1)
 	{
@@ -14,6 +14,7 @@ Patient* X_WaitList::cancel()
 		counter--;
 		if (counter == 0)
 			backPtr = nullptr;
+		p->setCancelled(true);
 		return p;
 	}
 	for (int i = 0; i < randNum - 2; i++)

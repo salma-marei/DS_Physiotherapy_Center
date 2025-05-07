@@ -4,7 +4,7 @@
 class X_WaitList : public EU_WaitList
 {
 public:
-	Patient* cancel();
+	Patient* cancel(int cancel);
 	int XTreatmentLatency();
 };
 

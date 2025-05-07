@@ -1,9 +1,9 @@
 PID 	Ptype 	PT 	VT 	FT 	WT 	TT 	Cancel 	Reschedule 	
+3	R	85	40	-1	0	0	F	T
 2	R	30	35	-1	10	0	F	F
 4	N	40	40	-1	0	0	F	F
-3	R	55	40	-1	0	0	F	T
 1	N	30	25	-1	0	0	F	F
-total number of timesteps = 69
+total number of timesteps = 91
 total number of all, N, R patients = 4	 2	 2
 Average total waiting time for all, N, and R patients = 2	 0	 5
 Average total treatment time for all, N, and R patients = 0	 26	 13
