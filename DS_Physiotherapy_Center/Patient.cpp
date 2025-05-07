@@ -9,21 +9,11 @@ int Patient::nextID = 0;
 
 int Patient::calcTT()
 {
-	Treatment* t = nullptr;
-	LinkedQueue<Treatment*> temp;
-	while (!treatmentList.isEmpty())
-	{
-		treatmentList.dequeue(t);
-		TT += getTreatmentTime(t);
-		temp.enqueue(t);
-	}
-	while (!temp.isEmpty())
-	{
-		temp.dequeue(t);
-		treatmentList.enqueue(t);
-	}
+	TT = finishTime - arrivalTime - WT;
 	return TT;
 }
+
+
 
 void Patient::setCancelled(bool canc)
 {
