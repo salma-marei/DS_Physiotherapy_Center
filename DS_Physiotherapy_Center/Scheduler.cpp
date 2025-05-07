@@ -100,8 +100,8 @@ void Scheduler::generateOutPutFile()
 	while (!FinishedPatients.isEmpty()) {
 		FinishedPatients.pop(p);
 	
-		outfile << p->getID() << "\t" << p->getType() << "\t" << p->getPT() << "\t" << p->getVT() << "\t" << p->getFT() << "\t"
-			<< p->getWT() << "\t" << p->calcTT() << "\t" << (p->getcancelled() ? "T" : "F") << "\t" << (p->getrescheduled() ? "T" : "F") << endl;;
+		outfile << p->getID() << "\t\t\t" << p->getType() << "\t" << p->getPT() << "\t" << p->getVT() << "\t" << p->getFT() << "\t"
+			<< p->getWT() << "\t" << p->calcTT() << "\t\t" << (p->getcancelled() ? "T" : "F") << "\t\t" << (p->getrescheduled() ? "T" : "F") << endl;;
 
 		totalPatients++;
 		totalWT += p->getWT();
@@ -114,7 +114,8 @@ void Scheduler::generateOutPutFile()
 			numRPatients++;
 			totalRWT += p->getWT();
 		}
-		if (p->getVT() < p->getPT()) earlyCount++;
+		if (p->getVT() < p->getPT()) 
+			earlyCount++;
 		if (p->getVT() > p->getPT())
 		{
 			lateCount++;
